@@ -23,7 +23,7 @@ string Terminal::getValue() const {
 }
 
 NonTerminal::NonTerminal(const string& name) :
-    name(name), productionRules() {}
+    name(name), productionRules(), cardinalities() {}
 
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
@@ -54,12 +54,12 @@ NonTerminal& Grammar::operator[](const string& name) {
     return getNonTerminal(name);
 }
 
-const NonTerminal* Grammar::getNonTerminal(const std::string& name) const {
+NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) {
 
     auto it = nonTerminals.find(name);
 
     if (it == nonTerminals.end()) {
-        return NULL;
+        return def;
     }
 
     return &it->second;

@@ -8,6 +8,7 @@
 #include <list>
 #include <string>
 #include <map>
+#include <utility>
 
 
 class Symbol {
@@ -34,7 +35,7 @@ public:
 
     void print(std::ostream& stream = std::cout) const;
 
-    unsigned long long getCardinality(int n) const;
+    unsigned long long getCardinality(int n, int pos = 0) const;
 };
 
 
@@ -53,6 +54,7 @@ public:
 class NonTerminal : public Symbol {
 
     std::vector<ProductionRule> productionRules;
+    std::vector<std::pair<bool, unsigned long long>> cardinalities;
 
 public:
 
@@ -66,7 +68,7 @@ public:
 
     void print(std::ostream& stream) const;
 
-    unsigned long long getCardinality(int n) const;
+    unsigned long long getCardinality(int n);
 };
 
 
@@ -83,7 +85,7 @@ public:
     Terminal& addTerminal(const std::string& value);
     NonTerminal& getNonTerminal(const std::string& name);
     NonTerminal& operator[](const std::string& name);
-    const NonTerminal* getNonTerminal(const std::string& name) const;
+    NonTerminal* getNonTerminal(const std::string& name, NonTerminal* def);
 
     void parse(std::istream& stream);
     void parseFile(const std::string& name);
@@ -91,7 +93,7 @@ public:
 
     void print(std::ostream& stream = std::cout) const;
 
-    unsigned long long getCardinality(const std::string& nonTerminalName, int n) const;
+    unsigned long long getCardinality(const std::string& nonTerminalName, int n);
 };
 
 #endif

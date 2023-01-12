@@ -4,12 +4,7 @@
 
 using namespace std;
 
-static unsigned long long cardinality(
-    const vector<NonTerminal*> nonTerminals,
-    int terminalsLength,
-    int n,
-    int pos = 0
-) {
+unsigned long long ProductionRule::getCardinality(int n, int pos) const {
 
     if (pos == nonTerminals.size()) {
 
@@ -29,7 +24,7 @@ static unsigned long long cardinality(
             unsigned long long nonTerminalCard = nonTerminals[pos]->getCardinality(i);
 
             if (nonTerminalCard != 0) {
-                card += nonTerminalCard * cardinality(nonTerminals, terminalsLength, n - i, pos + 1);
+                card += nonTerminalCard * getCardinality(n - i, pos + 1);
             }
         }
 
@@ -37,11 +32,19 @@ static unsigned long long cardinality(
     }
 }
 
-unsigned long long ProductionRule::getCardinality(int n) const {
-    return cardinality(nonTerminals, terminalsLength, n);
-}
+unsigned long long NonTerminal::getCardinality(int n) {
 
-unsigned long long NonTerminal::getCardinality(int n) const {
+    if (n < 0) {
+        return 0;
+    }
+
+    if (n >= cardinalities.size()) {
+        cardinalities.resize(n + 1);
+    }
+
+    if (cardinalities[n].first) {
+        return cardinalities[n].second;
+    }
     
     unsigned long long card = 0;
 
@@ -49,12 +52,15 @@ unsigned long long NonTerminal::getCardinality(int n) const {
         card += productionRule.getCardinality(n);
     }
 
+    cardinalities[n].first = true;
+    cardinalities[n].second = card;
+
     return card;
 }
 
-unsigned long long Grammar::getCardinality(const string& nonTerminalName, int n) const {
+unsigned long long Grammar::getCardinality(const string& nonTerminalName, int n) {
 
-    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName);
+    NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 
     if (nonTerminal == NULL) {
         return 0;
