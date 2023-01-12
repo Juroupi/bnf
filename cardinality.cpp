@@ -4,7 +4,7 @@
 
 using namespace std;
 
-unsigned long long ProductionRule::getCardinality(int n, int pos) const {
+big_int ProductionRule::getCardinality(int n, int pos) const {
 
     if (pos == nonTerminals.size()) {
 
@@ -17,11 +17,11 @@ unsigned long long ProductionRule::getCardinality(int n, int pos) const {
 
     else {
 
-        unsigned long long card = 0;
+        big_int card = 0;
 
         for (int i = 0; i <= n - terminalsLength; i++) {
 
-            unsigned long long nonTerminalCard = nonTerminals[pos]->getCardinality(i);
+            big_int nonTerminalCard = nonTerminals[pos]->getCardinality(i);
 
             if (nonTerminalCard != 0) {
                 card += nonTerminalCard * getCardinality(n - i, pos + 1);
@@ -32,7 +32,7 @@ unsigned long long ProductionRule::getCardinality(int n, int pos) const {
     }
 }
 
-unsigned long long NonTerminal::getCardinality(int n) {
+big_int NonTerminal::getCardinality(int n) {
 
     if (n < 0) {
         return 0;
@@ -46,7 +46,7 @@ unsigned long long NonTerminal::getCardinality(int n) {
         return cardinalities[n].second;
     }
     
-    unsigned long long card = 0;
+    big_int card = 0;
 
     for (const ProductionRule& productionRule : productionRules) {
         card += productionRule.getCardinality(n);
@@ -58,7 +58,7 @@ unsigned long long NonTerminal::getCardinality(int n) {
     return card;
 }
 
-unsigned long long Grammar::getCardinality(const string& nonTerminalName, int n) {
+big_int Grammar::getCardinality(const string& nonTerminalName, int n) {
 
     NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 

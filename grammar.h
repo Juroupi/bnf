@@ -10,6 +10,8 @@
 #include <map>
 #include <utility>
 
+#include "big_int.h"
+
 
 class Symbol {
 public:
@@ -35,7 +37,7 @@ public:
 
     void print(std::ostream& stream = std::cout) const;
 
-    unsigned long long getCardinality(int n, int pos = 0) const;
+    big_int getCardinality(int n, int pos = 0) const;
 };
 
 
@@ -54,7 +56,7 @@ public:
 class NonTerminal : public Symbol {
 
     std::vector<ProductionRule> productionRules;
-    std::vector<std::pair<bool, unsigned long long>> cardinalities;
+    std::vector<std::pair<bool, big_int>> cardinalities;
 
 public:
 
@@ -68,7 +70,7 @@ public:
 
     void print(std::ostream& stream) const;
 
-    unsigned long long getCardinality(int n);
+    big_int getCardinality(int n);
 };
 
 
@@ -93,7 +95,7 @@ public:
 
     void print(std::ostream& stream = std::cout) const;
 
-    unsigned long long getCardinality(const std::string& nonTerminalName, int n);
+    big_int getCardinality(const std::string& nonTerminalName, int n);
 };
 
 #endif

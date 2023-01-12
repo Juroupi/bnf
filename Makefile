@@ -1,5 +1,8 @@
 main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o build/cardinality.o
-	g++ main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o build/cardinality.o -o main
+	g++ main.cpp \
+		build/grammar.o build/print.o build/parser.o build/lexer.o build/cardinality.o \
+		-lgmp -lgmpxx \
+		-o main
 
 exec: main
 	./main

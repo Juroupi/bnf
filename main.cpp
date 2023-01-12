@@ -11,9 +11,9 @@ void printCardinality(Grammar& g, const string& nonTerminalName, int n) {
 
 int main() {
 
-    Grammar g("data/fibo2.bnf");
+    Grammar g("data/fibo.bnf");
 
-    printCardinality(g, "F", 300);
+    printCardinality(g, "F", 1000);
 
     return 0;
 }
