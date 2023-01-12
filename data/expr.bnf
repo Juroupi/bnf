@@ -1,0 +1,5 @@
+<exp> ::= <exp> "+" <addpart> | <exp> "-" <addpart> | <addpart>
+<addpart> ::= <addpart> "*" <mulpart> | <addpart> "/" <mulpart> | <mulpart>
+<mulpart> ::= <group> "^" <mulpart> | <group>
+<group> ::= <var> | "(" <exp> ")"
+<var> ::= "X"
