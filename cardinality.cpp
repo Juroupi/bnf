@@ -4,67 +4,80 @@
 
 using namespace std;
 
-big_int ProductionRule::getCardinality(int n, int pos) const {
+void ProductionRule::getCardinality(big_int& card, int n, int pos) const {
 
     if (pos == nonTerminals.size()) {
-
-        if (n == terminalsLength) {
-            return 1;
-        }
-
-        return 0;
+        card = (n == terminalsLength) ? 1 : 0;
     }
 
     else {
 
-        big_int card = 0;
+        card = 0;
+
+        big_int nonTerminalCard;
+        big_int nextNonTerminalsCard;
 
         for (int i = 0; i <= n - terminalsLength; i++) {
-
-            big_int nonTerminalCard = nonTerminals[pos]->getCardinality(i);
+            
+            nonTerminals[pos]->getCardinality(nonTerminalCard, i);
 
             if (nonTerminalCard != 0) {
-                card += nonTerminalCard * getCardinality(n - i, pos + 1);
+                getCardinality(nextNonTerminalsCard, n - i, pos + 1);
+                card += nonTerminalCard * nextNonTerminalsCard;
             }
         }
 
-        return card;
     }
 }
 
-big_int NonTerminal::getCardinality(int n) {
+void NonTerminal::getCardinality(big_int& card, int n) {
 
     if (n < 0) {
-        return 0;
+        card = 0;
+        return;
     }
 
     if (n >= cardinalities.size()) {
-        cardinalities.resize(n + 1);
+        cardinalities.resize(n + 1, NULL);
     }
 
-    if (cardinalities[n].first) {
-        return cardinalities[n].second;
+    if (cardinalities[n] != NULL) {
+        card = *cardinalities[n];
+        return;
     }
     
-    big_int card = 0;
+    card = 0;
+
+    big_int productionRuleCard;
 
     for (const ProductionRule& productionRule : productionRules) {
-        card += productionRule.getCardinality(n);
+        productionRule.getCardinality(productionRuleCard, n);
+        card += productionRuleCard;
     }
 
-    cardinalities[n].first = true;
-    cardinalities[n].second = card;
+    cardinalities[n] = new big_int(card);
+}
 
+big_int NonTerminal::getCardinality(int n) {
+    big_int card;
+    getCardinality(card, n);
     return card;
 }
 
-big_int Grammar::getCardinality(const string& nonTerminalName, int n) {
+void Grammar::getCardinality(big_int& card, const string& nonTerminalName, int n) {
 
     NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 
     if (nonTerminal == NULL) {
-        return 0;
+        card = 0;
+        return;
     }
 
-    return nonTerminal->getCardinality(n);
+    nonTerminal->getCardinality(card, n);
+}
+
+big_int Grammar::getCardinality(const string& nonTerminalName, int n) {
+    big_int card;
+    getCardinality(card, nonTerminalName, n);
+    return card;
 }
