@@ -8,7 +8,9 @@
 #include <list>
 #include <string>
 #include <map>
+#include <set>
 #include <utility>
+#include <memory>
 
 #include "big_int.h"
 
@@ -16,6 +18,7 @@
 class Symbol {
 public:
     virtual std::string getValue() const = 0;
+    virtual void getElements(std::set<std::string>& elements, int n) const = 0;
 };
 
 class Terminal;
@@ -28,6 +31,8 @@ class ProductionRule {
     std::vector<NonTerminal*> nonTerminals;
     std::vector<Symbol*> symbols;
 
+    void getElements(std::set<std::string>& elements, int n, int pos, std::string cur) const;
+
 public:
 
     ProductionRule();
@@ -38,6 +43,8 @@ public:
     void print(std::ostream& stream = std::cout) const;
 
     void getCardinality(big_int& res, int n, int pos = 0) const;
+
+    void getElements(std::set<std::string>& elements, int n) const;
 };
 
 
@@ -50,13 +57,15 @@ public:
     Terminal(const std::string& value);
 
     std::string getValue() const override;
+
+    void getElements(std::set<std::string>& elements, int n) const override;
 };
 
 
 class NonTerminal : public Symbol {
 
     std::vector<ProductionRule> productionRules;
-    std::vector<big_int*> cardinalities;
+    std::vector<std::unique_ptr<big_int>> cardinalities;
 
 public:
 
@@ -72,6 +81,8 @@ public:
 
     void getCardinality(big_int& res, int n);
     big_int getCardinality(int n);
+
+    void getElements(std::set<std::string>& elements, int n) const override;
 };
 
 
@@ -86,6 +97,7 @@ public:
     Grammar(const std::string& fileName);
 
     Terminal& addTerminal(const std::string& value);
+
     NonTerminal& getNonTerminal(const std::string& name);
     NonTerminal& operator[](const std::string& name);
     NonTerminal* getNonTerminal(const std::string& name, NonTerminal* def);
@@ -96,8 +108,10 @@ public:
 
     void print(std::ostream& stream = std::cout) const;
 
-    void getCardinality(big_int& res, const std::string& nonTerminalName, int n);
+    void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n);
     big_int getCardinality(const std::string& nonTerminalName, int n);
+
+    void getElements(std::set<std::string>& elements, const std::string& nonTerminalName, int n);
 };
 
 #endif

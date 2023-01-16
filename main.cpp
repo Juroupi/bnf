@@ -10,14 +10,28 @@ void printCardinality(Grammar& g, const string& nonTerminalName, int n) {
     big_int card = g.getCardinality(nonTerminalName, n);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
     cout << "cardinality(\"" << nonTerminalName << "\", " << n << ") = " << card << endl;
-    printf("temps = %fs\n", time.count());
+    printf("time = %fs\n", time.count());
+}
+
+void printElements(Grammar& g, const string& nonTerminalName, int n) {
+    set<string> elements;
+    auto start = std::chrono::high_resolution_clock::now();
+    g.getElements(elements, nonTerminalName, n);
+    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
+    cout << "elements(\"" << nonTerminalName << "\", " << n << ") = [";
+    for (const string& element : elements) {
+        if (&element != &(*elements.begin())) cout << ",";
+        cout << " \"" << element << "\"";
+    }
+    cout << " ]" << endl;
+    printf("time = %fs\n", time.count());
 }
 
 int main() {
 
-    Grammar g("data/fibo2.bnf");
+    Grammar g("data/par.bnf");
 
-    printCardinality(g, "F", 10000);
+    printElements(g, "W", 6);
 
     return 0;
 }
