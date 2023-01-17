@@ -27,11 +27,19 @@ void printElements(Grammar& g, const string& nonTerminalName, int n) {
     printf("time = %fs\n", time.count());
 }
 
+void printRandom(Grammar& g, const string& nonTerminalName, int n) {
+    auto start = std::chrono::high_resolution_clock::now();
+    string random = g.getRandomElement(nonTerminalName, n);
+    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
+    cout << "random(\"" << nonTerminalName << "\", " << n << ") = '" << random << "'" << endl;
+    printf("time = %fs\n", time.count());
+}
+
 int main() {
 
-    Grammar g("data/par.bnf");
+    Grammar g("data/uni.bnf");
 
-    printElements(g, "W", 6);
+    printRandom(g, "S", 1);
 
     return 0;
 }

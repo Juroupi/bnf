@@ -45,6 +45,8 @@ public:
     void getCardinality(big_int& res, int n, int pos = 0) const;
 
     void getElements(std::set<std::string>& elements, int n) const;
+
+    void getRandomElement(std::string& element, int n, rand_state& randState, int pos = 0);
 };
 
 
@@ -83,6 +85,9 @@ public:
     big_int getCardinality(int n);
 
     void getElements(std::set<std::string>& elements, int n) const override;
+
+    void getRandomElement(std::string& element, int n);
+    void getRandomElement(std::string& element, int n, rand_state& randState);
 };
 
 
@@ -112,6 +117,9 @@ public:
     big_int getCardinality(const std::string& nonTerminalName, int n);
 
     void getElements(std::set<std::string>& elements, const std::string& nonTerminalName, int n);
+
+    void getRandomElement(std::string& element, const std::string& nonTerminalName, int n);
+    std::string getRandomElement(const std::string& nonTerminalName, int n);
 };
 
 #endif
