@@ -37,9 +37,11 @@ void printRandom(Grammar& g, const string& nonTerminalName, int n) {
 
 int main() {
 
-    Grammar g("data/uni.bnf");
+    Grammar g("data/fibo.bnf");
 
-    printRandom(g, "S", 1);
+    for (int i = 0; i <= 10; i++) {
+        printCardinality(g, "F", i);
+    }
 
     return 0;
 }

@@ -17,9 +17,25 @@
 
 class Symbol {
 public:
-    virtual std::string getValue() const = 0;
+    virtual std::string getValue(bool raw = false) const = 0;
     virtual void getElements(std::set<std::string>& elements, int n) const = 0;
 };
+
+
+class DerivationTree {
+public:
+    class Derivation {
+        std::vector<Derivation> derivations;
+    public:
+        const Symbol* symbol;
+        Derivation(const Symbol* symbol);
+        Derivation& addDerivation(const Symbol* symbol);
+        const std::vector<Derivation>& getDerivations() const;
+    };
+    Derivation root;
+    DerivationTree(const Symbol* root);
+};
+
 
 class Terminal;
 class NonTerminal;
@@ -58,7 +74,7 @@ public:
 
     Terminal(const std::string& value);
 
-    std::string getValue() const override;
+    std::string getValue(bool raw = false) const override;
 
     void getElements(std::set<std::string>& elements, int n) const override;
 };
@@ -77,7 +93,7 @@ public:
 
     ProductionRule& addProductionRule();
 
-    std::string getValue() const override;
+    std::string getValue(bool raw = false) const override;
 
     void print(std::ostream& stream) const;
 

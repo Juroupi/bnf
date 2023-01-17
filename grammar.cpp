@@ -2,6 +2,21 @@
 
 using namespace std;
 
+DerivationTree::DerivationTree(const Symbol* root) :
+    root(root) {}
+
+DerivationTree::Derivation::Derivation(const Symbol* symbol) :
+    symbol(symbol) {}
+
+DerivationTree::Derivation& DerivationTree::Derivation::addDerivation(const Symbol* symbol) {
+    derivations.emplace_back(symbol);
+    return derivations.back();
+}
+
+const vector<DerivationTree::Derivation>& DerivationTree::Derivation::getDerivations() const {
+    return derivations;
+}
+
 ProductionRule::ProductionRule() :
     terminalsLength(0), nonTerminals(), symbols() {}
 
@@ -18,7 +33,12 @@ void ProductionRule::addSymbol(NonTerminal& nonTerminal) {
 Terminal::Terminal(const std::string& value) :
     value(value) {}
 
-string Terminal::getValue() const {
+string Terminal::getValue(bool raw) const {
+
+    if (raw) {
+        return value;
+    }
+
     return "\"" + value + "\"";
 }
 
@@ -30,7 +50,12 @@ ProductionRule& NonTerminal::addProductionRule() {
     return productionRules.back();
 }
 
-string NonTerminal::getValue() const {
+string NonTerminal::getValue(bool raw) const {
+
+    if (raw) {
+        return name;
+    }
+
     return "<" + name + ">";
 }
 
