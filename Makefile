@@ -1,10 +1,10 @@
 CXX = g++
 CXXFLAGS = -lgmp -lgmpxx
-DEBUG = -g
-# OPT = -O2
+# DEBUG = -g
+OPT = -O2
 
 main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o \
-      build/cardinality.o build/elements.o build/random.o
+      build/valuation.o build/cardinality.o build/elements.o build/random.o
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
 
 exec: main
@@ -20,6 +20,9 @@ build/parser.o: parser.cpp grammar.h
 	$(CXX) $< $(OPT) $(DEBUG) -c -o $@
 
 build/lexer.o: lexer.cpp lexer.h
+	$(CXX) $< $(OPT) $(DEBUG) -c -o $@
+
+build/valuation.o: valuation.cpp grammar.h
 	$(CXX) $< $(OPT) $(DEBUG) -c -o $@
 
 build/cardinality.o: cardinality.cpp grammar.h

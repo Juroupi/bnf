@@ -1,5 +1,7 @@
 #include "grammar.h"
 
+#include <climits>
+
 using namespace std;
 
 DerivationTree::DerivationTree(const Symbol* root) :
@@ -18,7 +20,7 @@ const vector<DerivationTree::Derivation>& DerivationTree::Derivation::getDerivat
 }
 
 ProductionRule::ProductionRule() :
-    terminalsLength(0), nonTerminals(), symbols() {}
+    terminalsLength(0), minLength(Grammar::maxMinLength), nonTerminals(), symbols() {}
 
 void ProductionRule::addSymbol(Terminal& terminal) {
     terminalsLength += terminal.value.length();
@@ -43,7 +45,7 @@ string Terminal::getValue(bool raw) const {
 }
 
 NonTerminal::NonTerminal(const string& name) :
-    name(name), productionRules(), cardinalities() {}
+    name(name), minLength(Grammar::maxMinLength), productionRules(), cardinalities() {}
 
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
@@ -59,11 +61,22 @@ string NonTerminal::getValue(bool raw) const {
     return "<" + name + ">";
 }
 
+void NonTerminal::reserveMemory(int n) {
+    cardinalities.reserve(n);
+}
+
+void NonTerminal::clearMemory() {
+    cardinalities.clear();
+}
+
+const int Grammar::maxMinLength = INT_MAX / 2;
+
 Grammar::Grammar() :
     terminals(), nonTerminals() {}
 
 Grammar::Grammar(const string& fileName) : Grammar() {
     parseFile(fileName);
+    updateMinLength();
 }
 
 Terminal& Grammar::addTerminal(const std::string& value) {
@@ -88,4 +101,16 @@ NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) 
     }
 
     return &it->second;
+}
+
+void Grammar::reserveMemory(int n) {
+    for (auto& it : nonTerminals) {
+        it.second.reserveMemory(n);
+    }
+}
+
+void Grammar::clearMemory() {
+    for (auto& it : nonTerminals) {
+        it.second.clearMemory();
+    }
 }

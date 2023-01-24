@@ -43,7 +43,7 @@ class NonTerminal;
 
 class ProductionRule {
 
-    int terminalsLength;
+    int terminalsLength, minLength;
     std::vector<NonTerminal*> nonTerminals;
     std::vector<Symbol*> symbols;
 
@@ -56,7 +56,10 @@ public:
     void addSymbol(Terminal& terminal);
     void addSymbol(NonTerminal& nonTerminal);
 
-    void print(std::ostream& stream = std::cout) const;
+    void print(bool detailed = false, std::ostream& stream = std::cout) const;
+
+    int getMinLength() const;
+    bool updateMinLength();
 
     void getCardinality(big_int& res, int n, int pos = 0) const;
 
@@ -82,6 +85,7 @@ public:
 
 class NonTerminal : public Symbol {
 
+    int minLength;
     std::vector<ProductionRule> productionRules;
     std::vector<std::unique_ptr<big_int>> cardinalities;
 
@@ -95,7 +99,13 @@ public:
 
     std::string getValue(bool raw = false) const override;
 
-    void print(std::ostream& stream) const;
+    void print(bool detailed = false, std::ostream& stream = std::cout) const;
+
+    void reserveMemory(int n);
+    void clearMemory();
+
+    int getMinLength() const;
+    bool updateMinLength();
 
     void getCardinality(big_int& res, int n);
     big_int getCardinality(int n);
@@ -114,6 +124,8 @@ class Grammar {
 
 public:
 
+    static const int maxMinLength;
+
     Grammar();
     Grammar(const std::string& fileName);
 
@@ -127,7 +139,12 @@ public:
     void parseFile(const std::string& name);
     void parseLine(const std::string& line, int pos = 0);
 
-    void print(std::ostream& stream = std::cout) const;
+    void print(bool detailed = false, std::ostream& stream = std::cout) const;
+
+    void reserveMemory(int n);
+    void clearMemory();
+
+    void updateMinLength();
 
     void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n);
     big_int getCardinality(const std::string& nonTerminalName, int n);

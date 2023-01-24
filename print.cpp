@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void ProductionRule::print(std::ostream& stream) const {
+void ProductionRule::print(bool detailed, std::ostream& stream) const {
 
     for (Symbol* const& symbol : symbols) {
 
@@ -14,27 +14,47 @@ void ProductionRule::print(std::ostream& stream) const {
             stream << " ";
         }
     }
+
+    if (detailed) {
+
+        stream << "\t; " << "minLength=";
+
+        if (minLength == Grammar::maxMinLength) {
+            stream << "inf";
+        }
+
+        else {
+            stream << minLength;
+        }
+    }
 }
 
-void NonTerminal::print(std::ostream& stream) const {
+void NonTerminal::print(bool detailed, std::ostream& stream) const {
 
     stream << getValue() << " ::= ";
 
     for (const ProductionRule& productionRule : productionRules) {
 
-        productionRule.print(stream);
+        productionRule.print(detailed, stream);
 
         if (&productionRule != &productionRules.back()) {
-            stream << " | ";
+            
+            if (detailed) {
+                stream << endl << getValue() << " ::= ";
+            }
+
+            else {
+                stream << " | ";
+            }
         }
     }
     
     stream << endl;
 }
 
-void Grammar::print(std::ostream& stream) const {
+void Grammar::print(bool detailed, std::ostream& stream) const {
 
     for (auto& it : nonTerminals) {
-        it.second.print(stream);
+        it.second.print(detailed, stream);
     }
 }

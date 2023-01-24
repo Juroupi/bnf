@@ -13,6 +13,13 @@ void printCardinality(Grammar& g, const string& nonTerminalName, int n) {
     printf("time = %fs\n", time.count());
 }
 
+void printCardinalityCSV(Grammar& g, const string& nonTerminalName, int n) {
+    auto start = std::chrono::high_resolution_clock::now();
+    big_int card = g.getCardinality(nonTerminalName, n);
+    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
+    printf("%d,%f\n", n, time.count());
+}
+
 void printElements(Grammar& g, const string& nonTerminalName, int n) {
     set<string> elements;
     auto start = std::chrono::high_resolution_clock::now();
@@ -39,9 +46,7 @@ int main() {
 
     Grammar g("data/fibo.bnf");
 
-    for (int i = 0; i <= 10; i++) {
-        printCardinality(g, "F", i);
-    }
+    printCardinality(g, "F", 10000);
 
     return 0;
 }
