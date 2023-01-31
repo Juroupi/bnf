@@ -14,19 +14,23 @@ void ProductionRule::getCardinality(big_int& cardinality, int n, int pos) const 
 
         cardinality = 0;
 
-        big_int nonTerminalCard;
-        big_int nextNonTerminalsCard;
+        if (n >= getMinLength()) {
 
-        for (int i = 0; i <= n - terminalsLength; i++) {
-            
-            nonTerminals[pos]->getCardinality(nonTerminalCard, i);
+            NonTerminal& nonTerminal = *nonTerminals[pos];
 
-            if (nonTerminalCard != 0) {
-                getCardinality(nextNonTerminalsCard, n - i, pos + 1);
-                cardinality += nonTerminalCard * nextNonTerminalsCard;
+            big_int nonTerminalCard;
+            big_int nextNonTerminalsCard;
+
+            for (int i = nonTerminal.getMinLength(); i <= n - terminalsLength; i++) {
+                
+                nonTerminal.getCardinality(nonTerminalCard, i);
+
+                if (nonTerminalCard != 0) {
+                    getCardinality(nextNonTerminalsCard, n - i, pos + 1);
+                    cardinality += nonTerminalCard * nextNonTerminalsCard;
+                }
             }
         }
-
     }
 }
 
