@@ -4,7 +4,18 @@
 
 using namespace std;
 
-void ProductionRule::print(bool detailed, std::ostream& stream) const {
+static void printLength(ostream& stream, int length) {
+    
+    if (length == Grammar::maxLength) {
+        stream << "inf";
+    }
+
+    else {
+        stream << length;
+    }
+}
+
+void ProductionRule::print(bool detailed, ostream& stream) const {
 
     for (Symbol* const& symbol : symbols) {
 
@@ -16,18 +27,8 @@ void ProductionRule::print(bool detailed, std::ostream& stream) const {
     }
 
     if (detailed) {
-
         stream << "\t; " << "minLength=";
-
-        if (minLength == Grammar::maxLength) {
-            stream << "inf";
-        }
-
-        else {
-            stream << minLength;
-        }
-
-        stream << " maxLength=" << maxLength;
+        printLength(stream, minLength);
     }
 }
 

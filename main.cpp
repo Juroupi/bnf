@@ -44,7 +44,7 @@ void printRandom(Grammar& g, const string& nonTerminalName, int n) {
 
 int main() {
 
-    Grammar g("data/fibo.bnf");
+    Grammar g("data/rec.bnf");
 
     g.print(true);
 
