@@ -20,7 +20,7 @@ const vector<DerivationTree::Derivation>& DerivationTree::Derivation::getDerivat
 }
 
 ProductionRule::ProductionRule() :
-    terminalsLength(0), minLength(Grammar::maxMinLength), nonTerminals(), symbols() {}
+    terminalsLength(0), minLength(Grammar::maxLength), maxLength(Grammar::minLength), nonTerminals(), symbols() {}
 
 void ProductionRule::addSymbol(Terminal& terminal) {
     terminalsLength += terminal.value.length();
@@ -45,7 +45,7 @@ string Terminal::getValue(bool raw) const {
 }
 
 NonTerminal::NonTerminal(const string& name) :
-    name(name), minLength(Grammar::maxMinLength), productionRules(), cardinalities() {}
+    name(name), minLength(Grammar::maxLength), maxLength(Grammar::minLength), productionRules(), cardinalities() {}
 
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
@@ -69,14 +69,15 @@ void NonTerminal::clearMemory() {
     cardinalities.clear();
 }
 
-const int Grammar::maxMinLength = INT_MAX / 2;
+const int Grammar::maxLength = INT_MAX / 2;
+const int Grammar::minLength = -1;
 
 Grammar::Grammar() :
     terminals(), nonTerminals() {}
 
 Grammar::Grammar(const string& fileName) : Grammar() {
     parseFile(fileName);
-    updateMinLength();
+    updateLengths();
 }
 
 Terminal& Grammar::addTerminal(const std::string& value) {

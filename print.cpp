@@ -19,13 +19,15 @@ void ProductionRule::print(bool detailed, std::ostream& stream) const {
 
         stream << "\t; " << "minLength=";
 
-        if (minLength == Grammar::maxMinLength) {
+        if (minLength == Grammar::maxLength) {
             stream << "inf";
         }
 
         else {
             stream << minLength;
         }
+
+        stream << " maxLength=" << maxLength;
     }
 }
 

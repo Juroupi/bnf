@@ -4,8 +4,8 @@
 
 using namespace std;
 
-static int addMinLengths(int v1, int v2) {
-    return min(Grammar::maxMinLength, v1 + v2);
+static int addLengths(int v1, int v2) {
+    return min(Grammar::maxLength, v1 + v2);
 }
 
 static bool update(int& dst, int src) {
@@ -23,24 +23,43 @@ int ProductionRule::getMinLength() const {
     return minLength;
 }
 
+int ProductionRule::getMaxLength() const {
+    return maxLength;
+}
+
 bool ProductionRule::updateMinLength() {
 
     int newMinLength = terminalsLength;
 
     for (const NonTerminal* nonTerminal : nonTerminals) {
-        newMinLength = addMinLengths(nonTerminal->getMinLength(), newMinLength);
+        newMinLength = addLengths(nonTerminal->getMinLength(), newMinLength);
     }
 
     return update(minLength, newMinLength);
+}
+
+bool ProductionRule::updateMaxLength() {
+
+    int newMaxLength = terminalsLength;
+
+    for (const NonTerminal* nonTerminal : nonTerminals) {
+        newMaxLength = addLengths(nonTerminal->getMaxLength(), newMaxLength);
+    }
+
+    return update(maxLength, newMaxLength);
 }
 
 int NonTerminal::getMinLength() const {
     return minLength;
 }
 
+int NonTerminal::getMaxLength() const {
+    return maxLength;
+}
+
 bool NonTerminal::updateMinLength() {
 
-    int newMinLength = Grammar::maxMinLength;
+    int newMinLength = Grammar::maxLength;
 
     for (const ProductionRule& productionRule : productionRules) {
         newMinLength = min(productionRule.getMinLength(), newMinLength);
@@ -50,6 +69,23 @@ bool NonTerminal::updateMinLength() {
 
     for (ProductionRule& productionRule : productionRules) {
         changes = productionRule.updateMinLength() || changes;
+    }
+
+    return changes;
+}
+
+bool NonTerminal::updateMaxLength() {
+
+    int newMaxLength = Grammar::minLength;
+
+    for (const ProductionRule& productionRule : productionRules) {
+        newMaxLength = max(productionRule.getMaxLength(), newMaxLength);
+    }
+
+    bool changes = update(maxLength, newMaxLength);
+
+    for (ProductionRule& productionRule : productionRules) {
+        changes = productionRule.updateMaxLength() || changes;
     }
 
     return changes;
@@ -68,4 +104,24 @@ void Grammar::updateMinLength() {
         }
     
     } while (changes);
+}
+
+void Grammar::updateMaxLength() {
+
+    bool changes;
+
+    do {
+
+        changes = false;
+
+        for (auto& it : nonTerminals) {
+            changes = it.second.updateMaxLength() || changes;
+        }
+    
+    } while (changes);
+}
+
+void Grammar::updateLengths() {
+    updateMinLength();
+    updateMaxLength();
 }

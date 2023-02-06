@@ -46,7 +46,9 @@ int main() {
 
     Grammar g("data/fibo.bnf");
 
-    printCardinality(g, "F", 10000);
+    g.print(true);
+
+    // printCardinality(g, "F", 1);
 
     return 0;
 }

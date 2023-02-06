@@ -43,7 +43,7 @@ class NonTerminal;
 
 class ProductionRule {
 
-    int terminalsLength, minLength;
+    int terminalsLength, minLength, maxLength;
     std::vector<NonTerminal*> nonTerminals;
     std::vector<Symbol*> symbols;
 
@@ -60,6 +60,8 @@ public:
 
     int getMinLength() const;
     bool updateMinLength();
+    int getMaxLength() const;
+    bool updateMaxLength();
 
     void getCardinality(big_int& res, int n, int pos = 0) const;
 
@@ -85,7 +87,7 @@ public:
 
 class NonTerminal : public Symbol {
 
-    int minLength;
+    int minLength, maxLength;
     std::vector<ProductionRule> productionRules;
     std::vector<std::unique_ptr<big_int>> cardinalities;
 
@@ -106,6 +108,8 @@ public:
 
     int getMinLength() const;
     bool updateMinLength();
+    int getMaxLength() const;
+    bool updateMaxLength();
 
     void getCardinality(big_int& res, int n);
     big_int getCardinality(int n);
@@ -122,9 +126,12 @@ class Grammar {
     std::list<Terminal> terminals;
     std::map<std::string, NonTerminal> nonTerminals;
 
+    void updateMinLength();
+    void updateMaxLength();
+
 public:
 
-    static const int maxMinLength;
+    static const int maxLength, minLength;
 
     Grammar();
     Grammar(const std::string& fileName);
@@ -144,7 +151,7 @@ public:
     void reserveMemory(int n);
     void clearMemory();
 
-    void updateMinLength();
+    void updateLengths();
 
     void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n);
     big_int getCardinality(const std::string& nonTerminalName, int n);
