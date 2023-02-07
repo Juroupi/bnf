@@ -59,7 +59,7 @@ public:
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 
     int getMinLength() const;
-    void computeMinLength(std::set<void*>& visited);
+    bool updateMinLength();
 
     void getCardinality(big_int& res, int n, int pos = 0) const;
 
@@ -105,7 +105,7 @@ public:
     void clearMemory();
 
     int getMinLength() const;
-    void computeMinLength(std::set<void*>& visited);
+    bool updateMinLength();
 
     void getCardinality(big_int& res, int n);
     big_int getCardinality(int n);
@@ -144,7 +144,7 @@ public:
     void reserveMemory(int n);
     void clearMemory();
 
-    void computeMinLength();
+    void updateMinLength();
 
     void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n);
     big_int getCardinality(const std::string& nonTerminalName, int n);

@@ -76,7 +76,7 @@ Grammar::Grammar() :
 
 Grammar::Grammar(const string& fileName) : Grammar() {
     parseFile(fileName);
-    computeMinLength();
+    updateMinLength();
 }
 
 Terminal& Grammar::addTerminal(const std::string& value) {
