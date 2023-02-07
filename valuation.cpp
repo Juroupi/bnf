@@ -34,6 +34,10 @@ bool ProductionRule::updateMinLength() {
     return update(minLength, newMinLength);
 }
 
+int Terminal::getMinLength() const {
+    return value.length();
+}
+
 int NonTerminal::getMinLength() const {
     return minLength;
 }

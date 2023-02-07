@@ -19,6 +19,7 @@ class Symbol {
 public:
     virtual std::string getValue(bool raw = false) const = 0;
     virtual void getElements(std::set<std::string>& elements, int n) const = 0;
+    virtual int getMinLength() const = 0;
 };
 
 
@@ -47,7 +48,7 @@ class ProductionRule {
     std::vector<NonTerminal*> nonTerminals;
     std::vector<Symbol*> symbols;
 
-    void getElements(std::set<std::string>& elements, int n, int pos, std::string cur) const;
+    void getElements(std::set<std::string>& elements, int totaln, int n, int pos, std::string cur) const;
 
 public:
 
@@ -80,6 +81,8 @@ public:
     std::string getValue(bool raw = false) const override;
 
     void getElements(std::set<std::string>& elements, int n) const override;
+
+    int getMinLength() const override;
 };
 
 
@@ -104,7 +107,7 @@ public:
     void reserveMemory(int n);
     void clearMemory();
 
-    int getMinLength() const;
+    int getMinLength() const override;
     bool updateMinLength();
 
     void getCardinality(big_int& res, int n);

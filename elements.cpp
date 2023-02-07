@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void ProductionRule::getElements(set<string>& elements, int n, int pos, string cur) const {
+void ProductionRule::getElements(set<string>& elements, int totaln, int n, int pos, string cur) const {
 
     if (pos == symbols.size()) {
 
@@ -13,22 +13,27 @@ void ProductionRule::getElements(set<string>& elements, int n, int pos, string c
         return;
     }
 
-    for (int i = 0; i <= n; i++) {
+    Symbol* symbol = symbols[pos];
+
+    int minLength = symbol->getMinLength();
+    int maxLength = totaln - (getMinLength() - minLength);
+
+    for (int i = minLength; i <= maxLength; i++) {
 
         set<string> pieces;
 
-        symbols[pos]->getElements(pieces, i);
+        symbol->getElements(pieces, i);
 
         for (const string& piece : pieces) {
-            getElements(elements, n - i, pos + 1, cur + piece);
+            getElements(elements, totaln, n - i, pos + 1, cur + piece);
         }
     }
 }
 
 void ProductionRule::getElements(set<string>& elements, int n) const {
 
-    if (n >= terminalsLength) {
-        getElements(elements, n, 0, "");
+    if (n >= getMinLength()) {
+        getElements(elements, n, n, 0, "");
     }
 }
 

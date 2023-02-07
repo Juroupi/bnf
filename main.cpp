@@ -48,7 +48,7 @@ int main() {
 
     // g.print(true);
 
-    printCardinality(g, "exp", 1);
+    printElements(g, "exp", 5);
 
     return 0;
 }

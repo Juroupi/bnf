@@ -12,25 +12,24 @@ void ProductionRule::getCardinality(big_int& cardinality, int n, int pos) const 
 
     else {
 
+        NonTerminal& nonTerminal = *nonTerminals[pos];
+
+        big_int nonTerminalCard;
+        big_int nextNonTerminalsCard;
+
         cardinality = 0;
 
-        if (n >= getMinLength()) {
+        // remplacer le "n - terminalsLength" par un maxLength comme dans elements.cpp
+        for (int i = nonTerminal.getMinLength(); i <= n - terminalsLength; i++) {
 
-            NonTerminal& nonTerminal = *nonTerminals[pos];
+            nonTerminal.getCardinality(nonTerminalCard, i);
 
-            big_int nonTerminalCard;
-            big_int nextNonTerminalsCard;
-
-            for (int i = nonTerminal.getMinLength(); i <= n - terminalsLength; i++) {
-                
-                nonTerminal.getCardinality(nonTerminalCard, i);
-
-                if (nonTerminalCard != 0) {
-                    getCardinality(nextNonTerminalsCard, n - i, pos + 1);
-                    cardinality += nonTerminalCard * nextNonTerminalsCard;
-                }
+            if (nonTerminalCard != 0) {
+                getCardinality(nextNonTerminalsCard, n - i, pos + 1);
+                cardinality += nonTerminalCard * nextNonTerminalsCard;
             }
         }
+        
     }
 }
 
@@ -53,10 +52,14 @@ void NonTerminal::getCardinality(big_int& cardinality, int n) {
     cardinality = 0;
 
     big_int productionRuleCard;
-
+    
     for (const ProductionRule& productionRule : productionRules) {
-        productionRule.getCardinality(productionRuleCard, n);
-        cardinality += productionRuleCard;
+        
+        if (n >= productionRule.getMinLength()) {
+        
+            productionRule.getCardinality(productionRuleCard, n);
+            cardinality += productionRuleCard;
+        }
     }
 
     cardinalities[n] = make_unique<big_int>(cardinality);
