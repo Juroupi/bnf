@@ -48,6 +48,8 @@ class ProductionRule {
     std::vector<NonTerminal*> nonTerminals;
     std::vector<Symbol*> symbols;
 
+    void getCardinality(big_int& res, int totaln, int n, int pos) const;
+
     void getElements(std::set<std::string>& elements, int totaln, int n, int pos, std::string cur) const;
 
 public:
@@ -62,7 +64,7 @@ public:
     int getMinLength() const;
     bool updateMinLength();
 
-    void getCardinality(big_int& res, int n, int pos = 0) const;
+    void getCardinality(big_int& res, int n) const;
 
     void getElements(std::set<std::string>& elements, int n) const;
 

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void ProductionRule::getCardinality(big_int& cardinality, int n, int pos) const {
+void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int pos) const {
 
     if (pos == nonTerminals.size()) {
         cardinality = (n == terminalsLength) ? 1 : 0;
@@ -19,18 +19,24 @@ void ProductionRule::getCardinality(big_int& cardinality, int n, int pos) const 
 
         cardinality = 0;
 
-        // remplacer le "n - terminalsLength" par un maxLength comme dans elements.cpp
-        for (int i = nonTerminal.getMinLength(); i <= n - terminalsLength; i++) {
+        int minLength = nonTerminal.getMinLength();
+        int maxLength = min(n, totaln - (getMinLength() - minLength));
+
+        for (int i = minLength; i <= maxLength; i++) {
 
             nonTerminal.getCardinality(nonTerminalCard, i);
 
             if (nonTerminalCard != 0) {
-                getCardinality(nextNonTerminalsCard, n - i, pos + 1);
+                getCardinality(nextNonTerminalsCard, totaln, n - i, pos + 1);
                 cardinality += nonTerminalCard * nextNonTerminalsCard;
             }
         }
         
     }
+}
+
+void ProductionRule::getCardinality(big_int& cardinality, int n) const {
+    return getCardinality(cardinality, n, n, 0);
 }
 
 void NonTerminal::getCardinality(big_int& cardinality, int n) {

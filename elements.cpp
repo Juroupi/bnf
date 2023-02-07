@@ -16,7 +16,7 @@ void ProductionRule::getElements(set<string>& elements, int totaln, int n, int p
     Symbol* symbol = symbols[pos];
 
     int minLength = symbol->getMinLength();
-    int maxLength = totaln - (getMinLength() - minLength);
+    int maxLength = min(n, totaln - (getMinLength() - minLength));
 
     for (int i = minLength; i <= maxLength; i++) {
 
