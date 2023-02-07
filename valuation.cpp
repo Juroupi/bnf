@@ -8,64 +8,60 @@ static int addLengths(int v1, int v2) {
     return min(Grammar::maxLength, v1 + v2);
 }
 
-static bool update(int& dst, int src) {
-
-    if (dst == src) {
-        return false;
-    }
-
-    dst = src;
-
-    return true;
-}
-
 int ProductionRule::getMinLength() const {
     return minLength;
 }
 
-bool ProductionRule::updateMinLength() {
+void ProductionRule::computeMinLength(set<void*>& visited) {
 
-    int newMinLength = terminalsLength;
+    if (minLength == Grammar::maxLength && visited.find(this) == visited.end()) {
 
-    for (const NonTerminal* nonTerminal : nonTerminals) {
-        newMinLength = addLengths(nonTerminal->getMinLength(), newMinLength);
+        if (symbols.size() == 2) cout << "skjgjg" << endl;
+
+        int newMinLength = terminalsLength;
+
+        visited.emplace(this);
+
+        for (NonTerminal* nonTerminal : nonTerminals) {
+            nonTerminal->computeMinLength(visited);
+            newMinLength = addLengths(nonTerminal->getMinLength(), newMinLength);
+        }
+
+        visited.erase(this);
+
+        minLength = newMinLength;
     }
-
-    return update(minLength, newMinLength);
 }
 
 int NonTerminal::getMinLength() const {
     return minLength;
 }
 
-bool NonTerminal::updateMinLength() {
+void NonTerminal::computeMinLength(set<void*>& visited) {
 
-    int newMinLength = Grammar::maxLength;
+    if (minLength == Grammar::maxLength && visited.find(this) == visited.end()) {
 
-    for (const ProductionRule& productionRule : productionRules) {
-        newMinLength = min(productionRule.getMinLength(), newMinLength);
+        // int newMinLength = Grammar::maxLength;
+        
+        visited.emplace(this);
+
+        for (ProductionRule& productionRule : productionRules) {
+            productionRule.computeMinLength(visited);
+            // newMinLength = min(productionRule.getMinLength(), newMinLength);
+            minLength = min(productionRule.getMinLength(), minLength);
+        }
+
+        visited.erase(this);
+
+        // minLength = newMinLength;
     }
-
-    bool changes = update(minLength, newMinLength);
-
-    for (ProductionRule& productionRule : productionRules) {
-        changes = productionRule.updateMinLength() || changes;
-    }
-
-    return changes;
 }
 
-void Grammar::updateMinLength() {
+void Grammar::computeMinLength() {
 
-    bool changes;
+    set<void*> visited;
 
-    do {
-
-        changes = false;
-
-        for (auto& it : nonTerminals) {
-            changes = it.second.updateMinLength() || changes;
-        }
-    
-    } while (changes);
+    for (auto& it : nonTerminals) {
+        it.second.computeMinLength(visited);
+    }
 }

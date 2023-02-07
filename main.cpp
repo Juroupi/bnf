@@ -46,6 +46,8 @@ int main() {
 
     Grammar g("data/rec.bnf");
 
+    g.computeMinLength();
+
     g.print(true);
 
     // printCardinality(g, "F", 1);

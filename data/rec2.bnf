@@ -1,0 +1,5 @@
+<A> ::= "b" <B> ; minLength=inf
+<B> ::= "c"     ; minLength=1
+<B> ::= "c" <B> ; minLength=inf
+<F> ::= <F>     ; minLength=inf
+<F> ::= "f"     ; minLength=1
