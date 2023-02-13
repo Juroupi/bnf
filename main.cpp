@@ -44,11 +44,11 @@ void printRandom(Grammar& g, const string& nonTerminalName, int n) {
 
 int main() {
 
-    Grammar g("data/expr.bnf");
+    Grammar g("data/uni.bnf");
 
     // g.print(true);
 
-    printCardinality(g, "exp", 5);
+    printRandom(g, "S", 1);
 
     return 0;
 }
