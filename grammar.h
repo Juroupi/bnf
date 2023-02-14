@@ -18,7 +18,9 @@
 class Symbol {
 public:
     virtual std::string getValue(bool raw = false) const = 0;
+    virtual void getCardinality(big_int& res, int n) = 0;
     virtual void getElements(std::set<std::string>& elements, int n) const = 0;
+    virtual void getElement(std::string& element, int n, big_int& id) const = 0;
     virtual int getMinLength() const = 0;
 };
 
@@ -35,8 +37,10 @@ class ProductionRule {
 
     void getCardinality(big_int& res, int totaln, int n, int pos) const;
 
-    void getElements(std::set<std::string>& elements, int totaln, int n, int pos, std::string cur) const;
+    void getElement(std::string& elements, int totaln, int n, big_int& id, int pos, std::string cur) const;
 
+    void getElements(std::set<std::string>& elements, int totaln, int n, int pos, std::string cur) const;
+    
 public:
 
     ProductionRule();
@@ -51,9 +55,9 @@ public:
 
     void getCardinality(big_int& res, int n) const;
 
-    void getElements(std::set<std::string>& elements, int n) const;
+    void getElement(std::string& element, int n, big_int& id) const;
 
-    void getRandomElement(std::string& element, int n, rand_state& randState, int pos = 0);
+    void getElements(std::set<std::string>& elements, int n) const;
 };
 
 
@@ -66,6 +70,10 @@ public:
     Terminal(const std::string& value);
 
     std::string getValue(bool raw = false) const override;
+
+    void getCardinality(big_int& res, int n) override;
+
+    void getElement(std::string& element, int n, big_int& id) const override;
 
     void getElements(std::set<std::string>& elements, int n) const override;
 
@@ -97,13 +105,12 @@ public:
     int getMinLength() const override;
     bool updateMinLength();
 
-    void getCardinality(big_int& res, int n);
+    void getCardinality(big_int& res, int n) override;
     big_int getCardinality(int n);
 
-    void getElements(std::set<std::string>& elements, int n) const override;
+    void getElement(std::string& element, int n, big_int& id) const override;
 
-    void getRandomElement(std::string& element, int n);
-    void getRandomElement(std::string& element, int n, rand_state& randState);
+    void getElements(std::set<std::string>& elements, int n) const override;
 };
 
 
@@ -139,10 +146,11 @@ public:
     void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n);
     big_int getCardinality(const std::string& nonTerminalName, int n);
 
+    void getElement(std::string& element, const std::string& nonTerminalName, int n, big_int& id);
+
     void getElements(std::set<std::string>& elements, const std::string& nonTerminalName, int n);
 
     void getRandomElement(std::string& element, const std::string& nonTerminalName, int n);
-    std::string getRandomElement(const std::string& nonTerminalName, int n);
 };
 
 #endif

@@ -1,62 +1,91 @@
 #include "grammar.h"
 
+#include <ctime>
+
 using namespace std;
 
-static inline void prefixSum(vector<big_int>& values) {
-    for (int i = 1; i < values.size(); i++) {
-        values[i] += values[i - 1];
-    }
-}
+static rand_state randState;
 
-static inline int weightedRandomChoice(rand_state& randState, const vector<big_int>& weightSums) {
+void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int pos, string cur) const {
 
-    big_int random = randState.get_z_range(weightSums.back());
+    if (pos == symbols.size()) {
 
-    for (int i = 0; i < weightSums.size(); i++) {
-
-        if (weightSums[i] < random) {
-            return i;
+        if (n == 0) {
+            element = cur;
         }
+
+        return;
     }
 
-    return weightSums.size() - 1;
+    Symbol* symbol = symbols[pos];
+
+    int minLength = symbol->getMinLength();
+    int maxLength = min(n, totaln - (getMinLength() - minLength));
+
+    for (int i = minLength; i <= maxLength; i++) {
+
+        big_int card;
+
+        symbol->getCardinality(card, i);
+
+        if (id < card) {
+
+            string piece;
+
+            symbol->getElement(piece, i, id);
+
+            getElement(element, totaln, n - i, id, pos + 1, cur + piece);
+
+            return;
+        }
+
+        id -= card;
+    }
 }
 
-void ProductionRule::getRandomElement(string& element, int n, rand_state& randState, int pos) {
+void ProductionRule::getElement(string& element, int n, big_int& id) const {
+
+    if (n >= getMinLength()) {
+        getElement(element, n, n, id, 0, "");
+    }
+}
+
+void Terminal::getElement(string& elements, int n, big_int& id) const {
+
+    if (id == 0 && n == value.length()) {
+        elements = value;
+    }
+}
+
+void NonTerminal::getElement(string& element, int n, big_int& id) const {
+
+    big_int card;
+
+    for (const ProductionRule& productionRule : productionRules) {
+
+        productionRule.getCardinality(card, n);
+
+        if (id < card) {
+            productionRule.getElement(element, n, id);
+            return;
+        }
+
+        id -= card;
+    }
+}
+
+void Grammar::getElement(string& element, const string& nonTerminalName, int n, big_int& id) {
     
-}
-
-void NonTerminal::getRandomElement(string& element, int n, rand_state& randState) {
-
-    vector<big_int> cardinalities(productionRules.size());
-
-    for (int i = 0; i < cardinalities.size(); i++) {
-        getCardinality(cardinalities[i], n);
-    }
-
-    prefixSum(cardinalities);
-
-    int choice = weightedRandomChoice(randState, cardinalities);
-
-    productionRules[choice].getRandomElement(element, n, randState);
-}
-
-void NonTerminal::getRandomElement(string& element, int n) {
-    rand_state randState(gmp_randinit_mt);
-    getRandomElement(element, n, randState);
-}
-
-void Grammar::getRandomElement(string& element, const string& nonTerminalName, int n) {
-
     NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 
     if (nonTerminal != NULL) {
-        nonTerminal->getRandomElement(element, n);
+        nonTerminal->getElement(element, n, id);
     }
 }
 
-string Grammar::getRandomElement(const string& nonTerminalName, int n) {
-    string element;
-    getRandomElement(element, nonTerminalName, n);
-    return element;
+void Grammar::getRandomElement(string& element, const string& nonTerminalName, int n) {
+    big_int card, id;
+    getCardinality(card, nonTerminalName, n);
+    id = randState.get(card);
+    getElement(element, nonTerminalName, n, id);
 }

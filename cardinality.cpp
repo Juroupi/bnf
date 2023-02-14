@@ -42,6 +42,10 @@ void ProductionRule::getCardinality(big_int& cardinality, int n) const {
     return getCardinality(cardinality, n, n, 0);
 }
 
+void Terminal::getCardinality(big_int& res, int n) {
+    res = (n == value.length()) ? 1 : 0;
+}
+
 void NonTerminal::getCardinality(big_int& cardinality, int n) {
 
     if (n < 0) {

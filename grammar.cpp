@@ -4,21 +4,6 @@
 
 using namespace std;
 
-DerivationTree::DerivationTree(const Symbol* root) :
-    root(root) {}
-
-DerivationTree::Derivation::Derivation(const Symbol* symbol) :
-    symbol(symbol) {}
-
-DerivationTree::Derivation& DerivationTree::Derivation::addDerivation(const Symbol* symbol) {
-    derivations.emplace_back(symbol);
-    return derivations.back();
-}
-
-const vector<DerivationTree::Derivation>& DerivationTree::Derivation::getDerivations() const {
-    return derivations;
-}
-
 ProductionRule::ProductionRule() :
     terminalsLength(0), minLength(Grammar::maxLength), nonTerminals(), symbols() {}
 

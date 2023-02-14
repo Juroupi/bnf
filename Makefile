@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -lgmp -lgmpxx
+CXXFLAGS = -lgmp -lgmpxx -Wall
 # DEBUG = -g
 OPT = -O2
 
