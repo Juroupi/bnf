@@ -37,7 +37,7 @@ class ProductionRule {
 
     void getCardinality(big_int& res, int totaln, int n, int pos) const;
 
-    void getElement(std::string& elements, int totaln, int n, big_int& id, int pos, std::string cur) const;
+    void getElement(std::string& elements, int totaln, int n, big_int& id, int spos, int ntpos) const;
 
     void getElements(std::set<std::string>& elements, int totaln, int n, int pos, std::string cur) const;
     

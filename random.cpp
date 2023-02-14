@@ -6,54 +6,74 @@ using namespace std;
 
 static rand_state randState;
 
-void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int pos, string cur) const {
+void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int spos, int ntpos) const {
 
-    if (pos == symbols.size()) {
+    if (spos == symbols.size()) {
+        return;
+    }
 
-        if (n == 0) {
-            element = cur;
+    if (ntpos == nonTerminals.size()) {
+        
+        for (int i = spos; i < symbols.size(); i++) {
+            element += symbols[i]->getValue(true);
         }
 
         return;
     }
 
-    Symbol* symbol = symbols[pos];
+    Symbol* symbol = symbols[spos];
 
     int minLength = symbol->getMinLength();
     int maxLength = min(n, totaln - (getMinLength() - minLength));
 
     for (int i = minLength; i <= maxLength; i++) {
 
-        big_int card;
+        big_int symbolCard;
+        symbol->getCardinality(symbolCard, i);
+        
+        if (symbolCard != 0) {
 
-        symbol->getCardinality(card, i);
+            big_int nextSymbolCard;
+            getCardinality(nextSymbolCard, totaln, n - i, ntpos + 1);
 
-        if (id < card) {
+            big_int card = symbolCard * nextSymbolCard;
 
-            string piece;
+            if (id < card) {
+            
+                string piece;
 
-            symbol->getElement(piece, i, id);
+                big_int symbolId = id / nextSymbolCard;
+                big_int nextSymbolId = id % nextSymbolCard;
 
-            getElement(element, totaln, n - i, id, pos + 1, cur + piece);
+                symbol->getElement(piece, i, symbolId);
 
-            return;
+                element += piece;
+
+                if (symbols[spos] == nonTerminals[ntpos]) {
+                    ntpos++;
+                }
+
+                getElement(element, totaln, n - i, nextSymbolId, spos + 1, ntpos);
+
+                return;
+            }
+
+            id -= card;
         }
-
-        id -= card;
     }
 }
 
 void ProductionRule::getElement(string& element, int n, big_int& id) const {
 
     if (n >= getMinLength()) {
-        getElement(element, n, n, id, 0, "");
+        getElement(element, n, n, id, 0, 0);
     }
 }
 
 void Terminal::getElement(string& elements, int n, big_int& id) const {
 
     if (id == 0 && n == value.length()) {
-        elements = value;
+        elements += value;
     }
 }
 

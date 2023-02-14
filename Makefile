@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -lgmp -lgmpxx -Wall
-# DEBUG = -g
-OPT = -O2
+DEBUG = -g
+# OPT = -O2
 
 main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o \
       build/valuation.o build/cardinality.o build/elements.o build/random.o
@@ -9,6 +9,9 @@ main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o \
 
 exec: main
 	./main
+
+debug: main
+	gdb ./main
 
 build/grammar.o: grammar.cpp grammar.h
 	$(CXX) $< $(OPT) $(DEBUG) -c -o $@

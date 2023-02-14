@@ -59,6 +59,7 @@ void printRandomCount(Grammar& g, const string& nonTerminalName, int n, int tota
     for (int i = 0; i < total; i++) {
         g.getRandomElement(random, nonTerminalName, n);
         count[random]++;
+        random.clear();
     }
     cout << "elements(\"" << nonTerminalName << "\", " << n << ") = [";
     for (auto& it : count) {
