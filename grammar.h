@@ -23,21 +23,6 @@ public:
 };
 
 
-class DerivationTree {
-public:
-    class Derivation {
-        std::vector<Derivation> derivations;
-    public:
-        const Symbol* symbol;
-        Derivation(const Symbol* symbol);
-        Derivation& addDerivation(const Symbol* symbol);
-        const std::vector<Derivation>& getDerivations() const;
-    };
-    Derivation root;
-    DerivationTree(const Symbol* root);
-};
-
-
 class Terminal;
 class NonTerminal;
 
