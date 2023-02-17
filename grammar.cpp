@@ -5,7 +5,7 @@
 using namespace std;
 
 ProductionRule::ProductionRule() :
-    terminalsLength(0), minLength(Grammar::maxLength), nonTerminals(), symbols() {}
+    terminalsLength(0), minLength(), nonTerminals(), symbols() {}
 
 void ProductionRule::addSymbol(Terminal& terminal) {
     terminalsLength += terminal.value.length();
@@ -56,10 +56,7 @@ void NonTerminal::clearMemory() {
 
 const int Grammar::maxLength = INT_MAX / 2;
 
-Grammar::Grammar() :
-    terminals(), nonTerminals() {}
-
-Grammar::Grammar(const string& fileName) : Grammar() {
+Grammar::Grammar(const string& fileName) {
     parseFile(fileName);
     updateMinLength();
 }

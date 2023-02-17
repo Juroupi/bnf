@@ -71,11 +71,11 @@ void printRandomCount(Grammar& g, const string& nonTerminalName, int n, int tota
 
 int main() {
 
-    Grammar g("data/uni2.bnf");
+    Grammar g("data/fibo.bnf");
 
-    // g.print(true);
+    g.print(true);
 
-    printRandomCount(g, "S", 1, 100);
+    // printCardinality(g, "F", 10000);
 
     return 0;
 }

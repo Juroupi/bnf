@@ -28,7 +28,6 @@ public:
 class Terminal;
 class NonTerminal;
 
-
 class ProductionRule {
 
     int terminalsLength, minLength;
@@ -123,7 +122,6 @@ public:
 
     static const int maxLength;
 
-    Grammar();
     Grammar(const std::string& fileName);
 
     Terminal& addTerminal(const std::string& value);
