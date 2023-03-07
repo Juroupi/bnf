@@ -6,9 +6,15 @@ using namespace std;
 
 static rand_state randState;
 
-void Grammar::getRandomElement(string& element, const string& nonTerminalName, int n) const {
+void NonTerminal::getRandomElement(string& element, int n) const {
     big_int card, id;
-    getCardinality(card, nonTerminalName, n);
+    getCardinality(card, n);
     id = randState.get(card);
-    getElement(element, nonTerminalName, n, id);
+    getElement(element, n, id);
+}
+
+string NonTerminal::getRandomElement(int n) const {
+    string res;
+    getRandomElement(res, n);
+    return res;
 }

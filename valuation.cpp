@@ -59,7 +59,7 @@ bool NonTerminal::updateMinLength() {
     return changes;
 }
 
-void Grammar::updateMinLength() {
+void Grammar::updateMinLengths() {
 
     bool changes;
 

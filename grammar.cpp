@@ -58,7 +58,7 @@ const int Grammar::maxLength = INT_MAX / 2;
 
 Grammar::Grammar(const string& fileName) {
     parseFile(fileName);
-    updateMinLength();
+    updateMinLengths();
 }
 
 Terminal& Grammar::addTerminal(const std::string& value) {
@@ -72,17 +72,6 @@ NonTerminal& Grammar::getNonTerminal(const string& name) {
 
 NonTerminal& Grammar::operator[](const string& name) {
     return getNonTerminal(name);
-}
-
-const NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) const {
-
-    auto it = nonTerminals.find(name);
-
-    if (it == nonTerminals.end()) {
-        return def;
-    }
-
-    return &it->second;
 }
 
 void Grammar::reserveMemory(int n) const {

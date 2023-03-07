@@ -97,11 +97,16 @@ public:
     void clearMemory() const;
 
     void getElements(std::set<std::string>& elements, int n) const override;
+    std::set<std::string> getElements(int n) const;
 
     void getElement(std::string& element, int n, big_int& id) const override;
+    std::string getElement(int n, big_int& id) const;
 
     int getMinLength() const override;
     bool updateMinLength();
+
+    void getRandomElement(std::string& element, int n) const;
+    std::string getRandomElement(int n) const;
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };
@@ -122,27 +127,19 @@ public:
 
     NonTerminal& getNonTerminal(const std::string& name);
     NonTerminal& operator[](const std::string& name);
-    const NonTerminal* getNonTerminal(const std::string& name, NonTerminal* def) const;
+
+    void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n) const;
+    big_int getCardinality(const std::string& nonTerminalName, int n) const;
+    void reserveMemory(int n) const;
+    void clearMemory() const;
+
+    void updateMinLengths();
 
     void parse(std::istream& stream);
     void parseFile(const std::string& name);
     void parseLine(const std::string& line, int pos = 0);
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
-
-    void reserveMemory(int n) const;
-    void clearMemory() const;
-
-    void updateMinLength();
-
-    void getCardinality(big_int& cardinality, const std::string& nonTerminalName, int n) const;
-    big_int getCardinality(const std::string& nonTerminalName, int n) const;
-
-    void getElement(std::string& element, const std::string& nonTerminalName, int n, big_int& id) const;
-
-    void getElements(std::set<std::string>& elements, const std::string& nonTerminalName, int n) const;
-
-    void getRandomElement(std::string& element, const std::string& nonTerminalName, int n) const;
 };
 
 #endif

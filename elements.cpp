@@ -51,11 +51,8 @@ void NonTerminal::getElements(set<string>& elements, int n) const {
     }
 }
 
-void Grammar::getElements(set<string>& elements, const string& nonTerminalName, int n) const {
-    
-    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
-
-    if (nonTerminal != NULL) {
-        nonTerminal->getElements(elements, n);
-    }
+set<string> NonTerminal::getElements(int n) const {
+    set<string> res;
+    getElements(res, n);
+    return res;
 }

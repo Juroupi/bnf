@@ -5,67 +5,74 @@
 
 using namespace std;
 
-void printCardinality(Grammar& g, const string& nonTerminalName, int n) {
+void printCardinality(NonTerminal& nonTerminal, int n) {
+
     auto start = std::chrono::high_resolution_clock::now();
-    big_int card = g.getCardinality(nonTerminalName, n);
+    big_int card = nonTerminal.getCardinality(n);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
-    cout << "cardinality(\"" << nonTerminalName << "\", " << n << ") = " << card << endl;
+
+    cout << "cardinality(\"" << nonTerminal.getValue(true) << "\", " << n << ") = " << card << endl;
+
     printf("time = %fs\n", time.count());
 }
 
-void printCardinalityCSV(Grammar& g, const string& nonTerminalName, int n) {
-    auto start = std::chrono::high_resolution_clock::now();
-    big_int card = g.getCardinality(nonTerminalName, n);
-    std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
-    printf("%d,%f\n", n, time.count());
-}
+void printElement(NonTerminal& nonTerminal, int n, big_int&& id) {
 
-void printElement(Grammar& g, const string& nonTerminalName, int n, big_int&& id) {
-    string element;
-    cout << "element(\"" << nonTerminalName << "\", " << n << ", " << id << ") = ";
+    cout << "element(\"" << nonTerminal.getValue(true) << "\", " << n << ", " << id << ") = ";
+
     auto start = std::chrono::high_resolution_clock::now();
-    g.getElement(element, nonTerminalName, n, id);
+    string element = nonTerminal.getElement(n, id);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
+
     cout << "'" << element << "'" << endl;
+
     printf("time = %fs\n", time.count());
 }
 
-void printElements(Grammar& g, const string& nonTerminalName, int n) {
-    set<string> elements;
+void printElements(NonTerminal& nonTerminal, int n) {
+
     auto start = std::chrono::high_resolution_clock::now();
-    g.getElements(elements, nonTerminalName, n);
+    set<string> elements = nonTerminal.getElements(n);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
-    cout << "elements(\"" << nonTerminalName << "\", " << n << ") = [";
+
+    cout << "elements(\"" << nonTerminal.getValue(true) << "\", " << n << ") = [";
     for (const string& element : elements) {
         if (&element != &(*elements.begin())) cout << ",";
         cout << " \"" << element << "\"";
     }
     cout << " ]" << endl;
+
     printf("time = %fs\n", time.count());
 }
 
-void printRandom(Grammar& g, const string& nonTerminalName, int n) {
+void printRandom(NonTerminal& nonTerminal, int n) {
+
     auto start = std::chrono::high_resolution_clock::now();
-    string random;
-    g.getRandomElement(random, nonTerminalName, n);
+    string random = nonTerminal.getRandomElement(n);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
-    cout << "random(\"" << nonTerminalName << "\", " << n << ") = '" << random << "'" << endl;
+
+    cout << "random(\"" << nonTerminal.getValue(true) << "\", " << n << ") = '" << random << "'" << endl;
+    
     printf("time = %fs\n", time.count());
 }
 
-void printRandomCount(Grammar& g, const string& nonTerminalName, int n, int total) {
-    string random;
+void printRandomCount(NonTerminal& nonTerminal, int n, int total) {
+
     map<string, int> count;
+
     for (int i = 0; i < total; i++) {
-        g.getRandomElement(random, nonTerminalName, n);
+        string random = nonTerminal.getRandomElement(n);
         count[random]++;
         random.clear();
     }
-    cout << "elements(\"" << nonTerminalName << "\", " << n << ") = [";
+
+    cout << "elements(\"" << nonTerminal.getValue(true) << "\", " << n << ") = [";
+
     for (auto& it : count) {
         if (&it != &(*count.begin())) cout << ",";
         cout << endl << "    \"" << it.first << "\" : " << it.second / (double)total;
     }
+
     cout << endl << "]" << endl;
 }
 
@@ -74,7 +81,7 @@ int main() {
     Grammar g("data/par.bnf");
 
     for (int i = 0; i < 5; i++) {
-        printElement(g, "W", 6, i);
+        printElement(g["W"], 6, i);
     }
 
     return 0;

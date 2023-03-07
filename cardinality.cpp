@@ -1,7 +1,5 @@
 #include "grammar.h"
 
-#include <iostream>
-
 using namespace std;
 
 void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int ntpos) const {
@@ -81,24 +79,5 @@ void NonTerminal::getCardinality(big_int& cardinality, int n) const {
 big_int NonTerminal::getCardinality(int n) const {
     big_int cardinality;
     getCardinality(cardinality, n);
-    return cardinality;
-}
-
-void Grammar::getCardinality(big_int& cardinality, const string& nonTerminalName, int n) const {
-
-    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, nullptr);
-
-    if (nonTerminal != nullptr) {
-        nonTerminal->getCardinality(cardinality, n);
-    }
-
-    else {
-        cardinality = 0;
-    }
-}
-
-big_int Grammar::getCardinality(const string& nonTerminalName, int n) const {
-    big_int cardinality;
-    getCardinality(cardinality, nonTerminalName, n);
     return cardinality;
 }

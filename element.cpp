@@ -94,11 +94,8 @@ void NonTerminal::getElement(string& element, int n, big_int& id) const {
     }
 }
 
-void Grammar::getElement(string& element, const string& nonTerminalName, int n, big_int& id) const {
-    
-    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
-
-    if (nonTerminal != NULL) {
-        nonTerminal->getElement(element, n, id);
-    }
+string NonTerminal::getElement(int n, big_int& id) const {
+    string res;
+    getElement(res, n, id);
+    return res;
 }
