@@ -2,64 +2,64 @@
 
 using namespace std;
 
-void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int spos, int ntpos) const {
+void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int spos, int ntposa) const {
 
-    if (spos == symbols.size()) {
-        return;
-    }
+    int ntpos = 0;
 
-    Symbol* symbol = symbols[spos];
+    for (Symbol* symbol : symbols) {
 
-    if (ntpos < nonTerminals.size() && symbol == nonTerminals[ntpos]) {
-        
-        int minLength = symbol->getMinLength();
-        int maxLength = min(n, totaln - (getMinLength() - minLength));
+        if (ntpos < nonTerminals.size() && symbol == nonTerminals[ntpos]) {
 
-        for (int i = minLength; i <= maxLength; i++) {
+            NonTerminal* symbol = nonTerminals[ntpos];
+            
+            int minLength = symbol->getMinLength();
+            int maxLength = min(n, totaln - (getMinLength() - minLength));
 
-            big_int symbolCard;
-            symbol->getCardinality(symbolCard, i);
+            for (int i = minLength; i <= maxLength; i++) {
 
-            if (symbolCard > 0) {
+                big_int symbolCard;
+                symbol->getCardinality(symbolCard, i);
 
-                big_int nextSymbolsCard;
-                getCardinality(nextSymbolsCard, totaln, n - i, ntpos + 1);
+                if (symbolCard > 0) {
 
-                if (nextSymbolsCard > 0) {
+                    big_int nextSymbolsCard;
+                    getCardinality(nextSymbolsCard, totaln, n - i, ntpos + 1);
 
-                    big_int totalCard = symbolCard * nextSymbolsCard;
+                    if (nextSymbolsCard > 0) {
 
-                    if (id < totalCard) {
+                        big_int totalCard = symbolCard * nextSymbolsCard;
 
-                        big_int symbolId = id % symbolCard;
-                        symbol->getElement(element, i, symbolId);
+                        if (id < totalCard) {
 
-                        id /= symbolCard;
-                        return getElement(element, totaln, n - i, id, spos + 1, ntpos + 1);
+                            big_int symbolId = id % symbolCard;
+                            symbol->getElement(element, i, symbolId);
+
+                            id /= symbolCard;
+                            n -= i;
+                            ntpos++;
+
+                            break;
+                        }
+
+                        id -= totalCard;
                     }
-
-                    id -= totalCard;
                 }
             }
         }
-    }
 
-    else {
-        
-        int minLength = symbol->getMinLength();
+        else {
 
-        big_int nextSymbolsCard;
-        getCardinality(nextSymbolsCard, totaln, n, ntpos);
+            big_int nextSymbolsCard;
+            getCardinality(nextSymbolsCard, totaln, n, ntpos);
 
-        if (id < nextSymbolsCard) {
+            if (id < nextSymbolsCard) {
+                element += static_cast<Terminal*>(symbol)->value;
+            }
 
-            element += symbol->getValue(true);
-
-            big_int nextSymbolsId = id;
-            return getElement(element, totaln, n, nextSymbolsId, spos + 1, ntpos);
+            else {
+                id -= nextSymbolsCard;
+            }
         }
-
-        id -= nextSymbolsCard;
     }
 }
 
