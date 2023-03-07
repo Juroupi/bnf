@@ -2,15 +2,23 @@
 
 using namespace std;
 
-void ProductionRule::getElement(string& element, int totaln, int n, big_int& id, int spos, int ntposa) const {
+void ProductionRule::getElement(string& element, int n, big_int& id) const {
+
+    if (n < getMinLength()) {
+        return;
+    }
+
+    const int totaln = n;
 
     int ntpos = 0;
 
-    for (Symbol* symbol : symbols) {
+    n -= terminalsLength;
+
+    for (const Symbol* symbol : symbols) {
 
         if (ntpos < nonTerminals.size() && symbol == nonTerminals[ntpos]) {
 
-            NonTerminal* symbol = nonTerminals[ntpos];
+            const NonTerminal* symbol = nonTerminals[ntpos];
             
             int minLength = symbol->getMinLength();
             int maxLength = min(n, totaln - (getMinLength() - minLength));
@@ -53,21 +61,13 @@ void ProductionRule::getElement(string& element, int totaln, int n, big_int& id,
             getCardinality(nextSymbolsCard, totaln, n, ntpos);
 
             if (id < nextSymbolsCard) {
-                element += static_cast<Terminal*>(symbol)->value;
+                element += static_cast<const Terminal*>(symbol)->value;
             }
 
             else {
                 id -= nextSymbolsCard;
             }
         }
-    }
-}
-
-
-void ProductionRule::getElement(string& element, int n, big_int& id) const {
-
-    if (n >= getMinLength()) {
-        getElement(element, n, n - terminalsLength, id, 0, 0);
     }
 }
 
@@ -94,9 +94,9 @@ void NonTerminal::getElement(string& element, int n, big_int& id) const {
     }
 }
 
-void Grammar::getElement(string& element, const string& nonTerminalName, int n, big_int& id) {
+void Grammar::getElement(string& element, const string& nonTerminalName, int n, big_int& id) const {
     
-    NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
+    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 
     if (nonTerminal != NULL) {
         nonTerminal->getElement(element, n, id);

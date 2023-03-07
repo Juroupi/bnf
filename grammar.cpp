@@ -20,10 +20,6 @@ void ProductionRule::addSymbol(NonTerminal& nonTerminal) {
 Terminal::Terminal(const std::string& value) :
     value(value) {}
 
-bool Terminal::isTerminal() const {
-    return true;
-}
-
 string Terminal::getValue(bool raw) const {
 
     if (raw) {
@@ -41,10 +37,6 @@ ProductionRule& NonTerminal::addProductionRule() {
     return productionRules.back();
 }
 
-bool NonTerminal::isTerminal() const {
-    return false;
-}
-
 string NonTerminal::getValue(bool raw) const {
 
     if (raw) {
@@ -54,11 +46,11 @@ string NonTerminal::getValue(bool raw) const {
     return "<" + name + ">";
 }
 
-void NonTerminal::reserveMemory(int n) {
+void NonTerminal::reserveMemory(int n) const {
     cardinalities.reserve(n);
 }
 
-void NonTerminal::clearMemory() {
+void NonTerminal::clearMemory() const {
     cardinalities.clear();
 }
 
@@ -82,7 +74,7 @@ NonTerminal& Grammar::operator[](const string& name) {
     return getNonTerminal(name);
 }
 
-NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) {
+const NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) const {
 
     auto it = nonTerminals.find(name);
 
@@ -93,14 +85,14 @@ NonTerminal* Grammar::getNonTerminal(const std::string& name, NonTerminal* def) 
     return &it->second;
 }
 
-void Grammar::reserveMemory(int n) {
-    for (auto& it : nonTerminals) {
+void Grammar::reserveMemory(int n) const {
+    for (const auto& it : nonTerminals) {
         it.second.reserveMemory(n);
     }
 }
 
-void Grammar::clearMemory() {
-    for (auto& it : nonTerminals) {
+void Grammar::clearMemory() const {
+    for (const auto& it : nonTerminals) {
         it.second.clearMemory();
     }
 }

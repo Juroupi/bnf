@@ -2,9 +2,9 @@
 
 using namespace std;
 
-void ProductionRule::getElements(set<string>& elements, int totaln, int n, int pos, string cur) const {
-
-    if (pos == symbols.size()) {
+void ProductionRule::getElements(set<string>& elements, int totaln, int n, int spos, string cur) const {
+    
+    if (spos == symbols.size()) {
 
         if (n == 0) {
             elements.emplace(cur);
@@ -13,7 +13,7 @@ void ProductionRule::getElements(set<string>& elements, int totaln, int n, int p
         return;
     }
 
-    Symbol* symbol = symbols[pos];
+    const Symbol* symbol = symbols[spos];
 
     int minLength = symbol->getMinLength();
     int maxLength = min(n, totaln - (getMinLength() - minLength));
@@ -25,7 +25,7 @@ void ProductionRule::getElements(set<string>& elements, int totaln, int n, int p
         symbol->getElements(pieces, i);
 
         for (const string& piece : pieces) {
-            getElements(elements, totaln, n - i, pos + 1, cur + piece);
+            getElements(elements, totaln, n - i, spos + 1, cur + piece);
         }
     }
 }
@@ -51,9 +51,9 @@ void NonTerminal::getElements(set<string>& elements, int n) const {
     }
 }
 
-void Grammar::getElements(set<string>& elements, const string& nonTerminalName, int n) {
+void Grammar::getElements(set<string>& elements, const string& nonTerminalName, int n) const {
     
-    NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
+    const NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
 
     if (nonTerminal != NULL) {
         nonTerminal->getElements(elements, n);
