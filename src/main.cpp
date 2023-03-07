@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void printCardinality(NonTerminal& nonTerminal, int n) {
+void printCardinality(NonTerminal& nonTerminal, unsigned int n) {
 
     auto start = std::chrono::high_resolution_clock::now();
     big_int card = nonTerminal.getCardinality(n);
@@ -16,7 +16,7 @@ void printCardinality(NonTerminal& nonTerminal, int n) {
     printf("time = %fs\n", time.count());
 }
 
-void printElement(NonTerminal& nonTerminal, int n, big_int&& id) {
+void printElement(NonTerminal& nonTerminal, unsigned int n, big_int&& id) {
 
     cout << "element(\"" << nonTerminal.getValue(true) << "\", " << n << ", " << id << ") = ";
 
@@ -29,7 +29,7 @@ void printElement(NonTerminal& nonTerminal, int n, big_int&& id) {
     printf("time = %fs\n", time.count());
 }
 
-void printElements(NonTerminal& nonTerminal, int n) {
+void printElements(NonTerminal& nonTerminal, unsigned int n) {
 
     auto start = std::chrono::high_resolution_clock::now();
     set<string> elements = nonTerminal.getElements(n);
@@ -45,7 +45,7 @@ void printElements(NonTerminal& nonTerminal, int n) {
     printf("time = %fs\n", time.count());
 }
 
-void printRandom(NonTerminal& nonTerminal, int n) {
+void printRandom(NonTerminal& nonTerminal, unsigned int n) {
 
     auto start = std::chrono::high_resolution_clock::now();
     string random = nonTerminal.getRandomElement(n);
@@ -56,11 +56,11 @@ void printRandom(NonTerminal& nonTerminal, int n) {
     printf("time = %fs\n", time.count());
 }
 
-void printRandomCount(NonTerminal& nonTerminal, int n, int total) {
+void printRandomCount(NonTerminal& nonTerminal, unsigned int n, unsigned int total) {
 
-    map<string, int> count;
+    map<string, unsigned int> count;
 
-    for (int i = 0; i < total; i++) {
+    for (unsigned int i = 0; i < total; i++) {
         string random = nonTerminal.getRandomElement(n);
         count[random]++;
         random.clear();
@@ -80,7 +80,7 @@ int main() {
 
     Grammar g("data/par.bnf");
 
-    for (int i = 0; i < 5; i++) {
+    for (unsigned int i = 0; i < 5; i++) {
         printElement(g["W"], 6, i);
     }
 

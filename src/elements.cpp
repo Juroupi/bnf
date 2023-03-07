@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void ProductionRule::getElements(set<string>& elements, int totaln, int n, int spos, string cur) const {
+void ProductionRule::getElements(set<string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, string cur) const {
     
     if (spos == symbols.size()) {
 
@@ -15,10 +15,10 @@ void ProductionRule::getElements(set<string>& elements, int totaln, int n, int s
 
     const Symbol* symbol = symbols[spos];
 
-    int minLength = symbol->getMinLength();
-    int maxLength = min(n, totaln - (getMinLength() - minLength));
+    unsigned int minLength = symbol->getMinLength();
+    unsigned int maxLength = min(n, totaln - (getMinLength() - minLength));
 
-    for (int i = minLength; i <= maxLength; i++) {
+    for (unsigned int i = minLength; i <= maxLength; i++) {
 
         set<string> pieces;
 
@@ -30,28 +30,28 @@ void ProductionRule::getElements(set<string>& elements, int totaln, int n, int s
     }
 }
 
-void ProductionRule::getElements(set<string>& elements, int n) const {
+void ProductionRule::getElements(set<string>& elements, unsigned int n) const {
 
     if (n >= getMinLength()) {
         getElements(elements, n, n, 0, "");
     }
 }
 
-void Terminal::getElements(set<string>& elements, int n) const {
+void Terminal::getElements(set<string>& elements, unsigned int n) const {
 
     if (n == value.length()) {
         elements.emplace(value);
     }
 }
 
-void NonTerminal::getElements(set<string>& elements, int n) const {
+void NonTerminal::getElements(set<string>& elements, unsigned int n) const {
 
     for (const ProductionRule& productionRule : productionRules) {
         productionRule.getElements(elements, n);
     }
 }
 
-set<string> NonTerminal::getElements(int n) const {
+set<string> NonTerminal::getElements(unsigned int n) const {
     set<string> res;
     getElements(res, n);
     return res;

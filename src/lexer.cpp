@@ -16,7 +16,7 @@ static const string tokenNames[] = {
     "END"
 };
 
-static bool readNext(const string& line, int& pos, const string& next) {
+static bool readNext(const string& line, unsigned int& pos, const string& next) {
 
     for (char c : next) {
 
@@ -30,7 +30,7 @@ static bool readNext(const string& line, int& pos, const string& next) {
     return true;
 }
 
-static bool readValue(const string& line, int& pos, string& value, char delimiter) {
+static bool readValue(const string& line, unsigned int& pos, string& value, char delimiter) {
 
     while (line[pos] != delimiter) {
 
@@ -44,7 +44,7 @@ static bool readValue(const string& line, int& pos, string& value, char delimite
     return true;
 }
 
-Token _readToken(const string& line, int& pos, string& value) {
+Token _readToken(const string& line, unsigned int& pos, string& value) {
 
     value.clear();
     
@@ -89,13 +89,13 @@ Token _readToken(const string& line, int& pos, string& value) {
     return Token::INVALID;
 }
 
-Token readToken(const string& line, int& pos, string& value) {
+Token readToken(const string& line, unsigned int& pos, string& value) {
     Token token = _readToken(line, pos, value);
     pos++;
     return token;
 }
 
-Token readToken(const std::string& line, int& pos) {
+Token readToken(const std::string& line, unsigned int& pos) {
     string value;
     return readToken(line, pos, value);
 }

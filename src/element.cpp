@@ -2,15 +2,15 @@
 
 using namespace std;
 
-void ProductionRule::getElement(string& element, int n, big_int& id) const {
+void ProductionRule::getElement(string& element, unsigned int n, big_int& id) const {
 
     if (n < getMinLength()) {
         return;
     }
 
-    const int totaln = n;
+    const unsigned int totaln = n;
 
-    int ntpos = 0;
+    unsigned int ntpos = 0;
 
     n -= terminalsLength;
 
@@ -20,10 +20,10 @@ void ProductionRule::getElement(string& element, int n, big_int& id) const {
 
             const NonTerminal* symbol = nonTerminals[ntpos];
             
-            int minLength = symbol->getMinLength();
-            int maxLength = min(n, totaln - (getMinLength() - minLength));
+            unsigned int minLength = symbol->getMinLength();
+            unsigned int maxLength = min(n, totaln - (getMinLength() - minLength));
 
-            for (int i = minLength; i <= maxLength; i++) {
+            for (unsigned int i = minLength; i <= maxLength; i++) {
 
                 big_int symbolCard;
                 symbol->getCardinality(symbolCard, i);
@@ -71,14 +71,14 @@ void ProductionRule::getElement(string& element, int n, big_int& id) const {
     }
 }
 
-void Terminal::getElement(string& elements, int n, big_int& id) const {
+void Terminal::getElement(string& elements, unsigned int n, big_int& id) const {
 
     if (id == 0 && n == value.length()) {
         elements += value;
     }
 }
 
-void NonTerminal::getElement(string& element, int n, big_int& id) const {
+void NonTerminal::getElement(string& element, unsigned int n, big_int& id) const {
 
     big_int card;
 
@@ -94,7 +94,7 @@ void NonTerminal::getElement(string& element, int n, big_int& id) const {
     }
 }
 
-string NonTerminal::getElement(int n, big_int& id) const {
+string NonTerminal::getElement(unsigned int n, big_int& id) const {
     string res;
     getElement(res, n, id);
     return res;

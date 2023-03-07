@@ -12,7 +12,7 @@ static void syntaxError(const string& message) {
     exit(1);
 }
 
-static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRule, const string& line, int& pos) {
+static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRule, const string& line, unsigned int& pos) {
 
     Token token;
     string value;
@@ -34,7 +34,7 @@ static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRul
     return parseProductionRule(grammar, productionRule, line, pos);
 }
 
-static Token parseProductionRules(Grammar& grammar, NonTerminal& nonTerminal, const string& line, int& pos) {
+static Token parseProductionRules(Grammar& grammar, NonTerminal& nonTerminal, const string& line, unsigned int& pos) {
 
     Token token = parseProductionRule(grammar, nonTerminal.addProductionRule(), line, pos);
 
@@ -45,7 +45,7 @@ static Token parseProductionRules(Grammar& grammar, NonTerminal& nonTerminal, co
     return token;
 }
 
-void Grammar::parseLine(const string& line, int pos) {
+void Grammar::parseLine(const string& line, unsigned int pos) {
 
     string nonTerminalName;
 

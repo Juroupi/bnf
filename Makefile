@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Iinclude -lgmp -lgmpxx -Wall
+CXXFLAGS = -Iinclude -lgmp -lgmpxx # -Wall
 # DEBUG = -g
 OPT = -O2
 
@@ -14,7 +14,8 @@ debug: bin/main
 	gdb ./bin/main
 
 bin/%.o: src/%.cpp include/grammar.h
-	$(CXX) $< $(OPT) $(DEBUG) -c -o $@
+	@mkdir -p bin
+	$(CXX) $< $(CXXFLAGS) $(OPT) $(DEBUG) -c -o $@
 
 clean:
 	rm -rf bin/*

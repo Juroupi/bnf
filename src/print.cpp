@@ -4,7 +4,7 @@
 
 using namespace std;
 
-static void printLength(ostream& stream, int length) {
+static void printLength(ostream& stream, unsigned int length) {
     
     if (length == Grammar::maxLength) {
         stream << "inf";

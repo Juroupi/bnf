@@ -30,7 +30,7 @@ string Terminal::getValue(bool raw) const {
 }
 
 NonTerminal::NonTerminal(const string& name) :
-    name(name), minLength(Grammar::maxLength), productionRules(), cardinalities() {}
+    minLength(Grammar::maxLength), productionRules(), cardinalities(), name(name) {}
 
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
@@ -46,7 +46,7 @@ string NonTerminal::getValue(bool raw) const {
     return "<" + name + ">";
 }
 
-void NonTerminal::reserveMemory(int n) const {
+void NonTerminal::reserveMemory(unsigned int n) const {
     cardinalities.reserve(n);
 }
 
@@ -54,7 +54,7 @@ void NonTerminal::clearMemory() const {
     cardinalities.clear();
 }
 
-const int Grammar::maxLength = INT_MAX / 2;
+const unsigned int Grammar::maxLength = INT_MAX / 2;
 
 Grammar::Grammar(const string& fileName) {
     parseFile(fileName);
@@ -74,7 +74,7 @@ NonTerminal& Grammar::operator[](const string& name) {
     return getNonTerminal(name);
 }
 
-void Grammar::reserveMemory(int n) const {
+void Grammar::reserveMemory(unsigned int n) const {
     for (const auto& it : nonTerminals) {
         it.second.reserveMemory(n);
     }

@@ -14,9 +14,9 @@ enum Token {
     END
 };
 
-Token readToken(const std::string& line, int& pos, std::string& value);
+Token readToken(const std::string& line, unsigned int& pos, std::string& value);
 
-Token readToken(const std::string& line, int& pos);
+Token readToken(const std::string& line, unsigned int& pos);
 
 std::string tokenName(Token token);
 

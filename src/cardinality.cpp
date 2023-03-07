@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int ntpos) const {
+void ProductionRule::getCardinality(big_int& cardinality, unsigned int totaln, unsigned int n, unsigned int ntpos) const {
 
     if (ntpos == nonTerminals.size()) {
         cardinality = (n == 0) ? 1 : 0;
@@ -17,13 +17,13 @@ void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int
 
         cardinality = 0;
 
-        int minLength = nonTerminal.getMinLength();
+        unsigned int minLength = nonTerminal.getMinLength();
         // la longueur de ce non terminal ne peut pas être plus grande
         // que la longueur totale de la règle moins la somme de la longueur
         // minimale des autres symboles
-        int maxLength = min(n, totaln - (getMinLength() - minLength));
+        unsigned int maxLength = min(n, totaln - (getMinLength() - minLength));
 
-        for (int i = minLength; i <= maxLength; i++) {
+        for (unsigned int i = minLength; i <= maxLength; i++) {
 
             nonTerminal.getCardinality(nonTerminalCard, i);
 
@@ -36,15 +36,15 @@ void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int
     }
 }
 
-void ProductionRule::getCardinality(big_int& cardinality, int n) const {
+void ProductionRule::getCardinality(big_int& cardinality, unsigned int n) const {
     return getCardinality(cardinality, n, n - terminalsLength, 0);
 }
 
-void Terminal::getCardinality(big_int& res, int n) const {
+void Terminal::getCardinality(big_int& res, unsigned int n) const {
     res = (n == value.length()) ? 1 : 0;
 }
 
-void NonTerminal::getCardinality(big_int& cardinality, int n) const {
+void NonTerminal::getCardinality(big_int& cardinality, unsigned int n) const {
 
     if (n < 0) {
         cardinality = 0;
@@ -76,7 +76,7 @@ void NonTerminal::getCardinality(big_int& cardinality, int n) const {
     cardinalities[n] = make_unique<big_int>(cardinality);
 }
 
-big_int NonTerminal::getCardinality(int n) const {
+big_int NonTerminal::getCardinality(unsigned int n) const {
     big_int cardinality;
     getCardinality(cardinality, n);
     return cardinality;

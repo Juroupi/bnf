@@ -4,11 +4,11 @@
 
 using namespace std;
 
-static int addLengths(int v1, int v2) {
+static unsigned int addLengths(unsigned int v1, unsigned int v2) {
     return min(Grammar::maxLength, v1 + v2);
 }
 
-static bool update(int& dst, int src) {
+static bool update(unsigned int& dst, unsigned int src) {
 
     if (dst == src) {
         return false;
@@ -19,13 +19,13 @@ static bool update(int& dst, int src) {
     return true;
 }
 
-int ProductionRule::getMinLength() const {
+unsigned int ProductionRule::getMinLength() const {
     return minLength;
 }
 
 bool ProductionRule::updateMinLength() {
 
-    int newMinLength = terminalsLength;
+    unsigned int newMinLength = terminalsLength;
 
     for (const NonTerminal* nonTerminal : nonTerminals) {
         newMinLength = addLengths(nonTerminal->getMinLength(), newMinLength);
@@ -34,17 +34,17 @@ bool ProductionRule::updateMinLength() {
     return update(minLength, newMinLength);
 }
 
-int Terminal::getMinLength() const {
+unsigned int Terminal::getMinLength() const {
     return value.length();
 }
 
-int NonTerminal::getMinLength() const {
+unsigned int NonTerminal::getMinLength() const {
     return minLength;
 }
 
 bool NonTerminal::updateMinLength() {
     
-    int newMinLength = Grammar::maxLength;
+    unsigned int newMinLength = Grammar::maxLength;
 
     for (const ProductionRule& productionRule : productionRules) {
         newMinLength = min(productionRule.getMinLength(), newMinLength);
