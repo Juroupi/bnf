@@ -20,6 +20,10 @@ void ProductionRule::addSymbol(NonTerminal& nonTerminal) {
 Terminal::Terminal(const std::string& value) :
     value(value) {}
 
+bool Terminal::isTerminal() const {
+    return true;
+}
+
 string Terminal::getValue(bool raw) const {
 
     if (raw) {
@@ -35,6 +39,10 @@ NonTerminal::NonTerminal(const string& name) :
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
     return productionRules.back();
+}
+
+bool NonTerminal::isTerminal() const {
+    return false;
 }
 
 string NonTerminal::getValue(bool raw) const {

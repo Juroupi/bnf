@@ -1,10 +1,10 @@
 CXX = g++
-CXXFLAGS = -lgmp -lgmpxx -Wall
+CXXFLAGS = -O0 -lgmp -lgmpxx # -Wall
 # DEBUG = -g
 # OPT = -O2
 
 main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o \
-      build/valuation.o build/cardinality.o build/elements.o build/random.o
+      build/valuation.o build/cardinality.o build/elements.o build/random.o build/element.o
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
 
 exec: main

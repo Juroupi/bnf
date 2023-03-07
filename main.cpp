@@ -22,11 +22,11 @@ void printCardinalityCSV(Grammar& g, const string& nonTerminalName, int n) {
 
 void printElement(Grammar& g, const string& nonTerminalName, int n, big_int&& id) {
     string element;
+    cout << "element(\"" << nonTerminalName << "\", " << n << ", " << id << ") = ";
     auto start = std::chrono::high_resolution_clock::now();
     g.getElement(element, nonTerminalName, n, id);
     std::chrono::duration<double> time = std::chrono::high_resolution_clock::now() - start;
-    cout << "element(\"" << nonTerminalName << "\", " << n << ", " << id << ") = '"
-         << element << "'" << endl;
+    cout << "'" << element << "'" << endl;
     printf("time = %fs\n", time.count());
 }
 
@@ -71,11 +71,11 @@ void printRandomCount(Grammar& g, const string& nonTerminalName, int n, int tota
 
 int main() {
 
-    Grammar g("data/fibo.bnf");
+    Grammar g("data/par.bnf");
 
-    g.print(true);
-
-    // printCardinality(g, "F", 10000);
+    for (int i = 0; i < 5; i++) {
+        printElement(g, "W", 6, i);
+    }
 
     return 0;
 }

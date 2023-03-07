@@ -17,6 +17,7 @@
 
 class Symbol {
 public:
+    virtual bool isTerminal() const = 0;
     virtual std::string getValue(bool raw = false) const = 0;
     virtual void getCardinality(big_int& res, int n) = 0;
     virtual void getElements(std::set<std::string>& elements, int n) const = 0;
@@ -68,6 +69,8 @@ public:
 
     Terminal(const std::string& value);
 
+    bool isTerminal() const override;
+
     std::string getValue(bool raw = false) const override;
 
     void getCardinality(big_int& res, int n) override;
@@ -93,6 +96,8 @@ public:
     NonTerminal(const std::string& name);
 
     ProductionRule& addProductionRule();
+
+    bool isTerminal() const override;
 
     std::string getValue(bool raw = false) const override;
 

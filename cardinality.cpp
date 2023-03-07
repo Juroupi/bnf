@@ -7,7 +7,7 @@ using namespace std;
 void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int pos) const {
 
     if (pos == nonTerminals.size()) {
-        cardinality = (n == terminalsLength) ? 1 : 0;
+        cardinality = (n == 0) ? 1 : 0;
     }
 
     else {
@@ -39,7 +39,7 @@ void ProductionRule::getCardinality(big_int& cardinality, int totaln, int n, int
 }
 
 void ProductionRule::getCardinality(big_int& cardinality, int n) const {
-    return getCardinality(cardinality, n, n, 0);
+    return getCardinality(cardinality, n, n - terminalsLength, 0);
 }
 
 void Terminal::getCardinality(big_int& res, int n) {
@@ -86,9 +86,9 @@ big_int NonTerminal::getCardinality(int n) {
 
 void Grammar::getCardinality(big_int& cardinality, const string& nonTerminalName, int n) {
 
-    NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, NULL);
+    NonTerminal* nonTerminal = getNonTerminal(nonTerminalName, nullptr);
 
-    if (nonTerminal != NULL) {
+    if (nonTerminal != nullptr) {
         nonTerminal->getCardinality(cardinality, n);
     }
 
