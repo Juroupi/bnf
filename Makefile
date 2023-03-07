@@ -1,20 +1,20 @@
 CXX = g++
-CXXFLAGS = -O0 -lgmp -lgmpxx # -Wall
+CXXFLAGS = -Iinclude -lgmp -lgmpxx -Wall
 # DEBUG = -g
-# OPT = -O2
+OPT = -O2
 
-main: main.cpp build/grammar.o build/print.o build/parser.o build/lexer.o \
-      build/valuation.o build/cardinality.o build/elements.o build/random.o build/element.o
+bin/main: src/main.cpp bin/grammar.o bin/print.o bin/parser.o bin/lexer.o \
+          bin/valuation.o bin/cardinality.o bin/elements.o bin/random.o bin/element.o
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
 
-exec: main
-	./main
+exec: bin/main
+	./bin/main
 
-debug: main
-	gdb ./main
+debug: bin/main
+	gdb ./bin/main
 
-build/%.o: %.cpp grammar.h
+bin/%.o: src/%.cpp include/grammar.h
 	$(CXX) $< $(OPT) $(DEBUG) -c -o $@
 
 clean:
-	rm -rf main build/*
+	rm -rf bin/*
