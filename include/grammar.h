@@ -37,6 +37,8 @@ class ProductionRule {
     
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
+    unsigned int getSymbolMaxLength(unsigned int n, unsigned int totaln, unsigned int minLength) const;
+
 public:
 
     ProductionRule();

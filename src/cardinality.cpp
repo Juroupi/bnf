@@ -18,10 +18,7 @@ void ProductionRule::getCardinality(big_int& cardinality, unsigned int totaln, u
         cardinality = 0;
 
         unsigned int minLength = nonTerminal.getMinLength();
-        // la longueur de ce non terminal ne peut pas être plus grande
-        // que la longueur totale de la règle moins la somme de la longueur
-        // minimale des autres symboles
-        unsigned int maxLength = min(n, totaln - (getMinLength() - minLength));
+        unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
 
         for (unsigned int i = minLength; i <= maxLength; i++) {
 

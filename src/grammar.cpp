@@ -17,6 +17,21 @@ void ProductionRule::addSymbol(NonTerminal& nonTerminal) {
     symbols.push_back(&nonTerminal);
 }
 
+unsigned int ProductionRule::getSymbolMaxLength(unsigned int n, unsigned int totaln, unsigned int minLength) const {
+    
+    // la longueur de ce symbole ne peut pas être plus grande
+    // que la longueur totale de la règle moins la somme de la longueur
+    // minimale des autres symboles
+
+    unsigned int othersMinLength = getMinLength() - minLength;
+
+    if (totaln <= othersMinLength) {
+        return 0;
+    }
+
+    return min(n, totaln - othersMinLength);
+}
+
 Terminal::Terminal(const std::string& value) :
     value(value) {}
 
@@ -54,7 +69,7 @@ void NonTerminal::clearMemory() const {
     cardinalities.clear();
 }
 
-const unsigned int Grammar::maxLength = INT_MAX / 2;
+const unsigned int Grammar::maxLength = UINT_MAX / 2;
 
 Grammar::Grammar(const string& fileName) {
     parseFile(fileName);
