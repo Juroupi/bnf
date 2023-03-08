@@ -14,8 +14,8 @@ class Grammar:
     clib.getNonTerminal.argtypes = [ ctypes.c_void_p, ctypes.c_char_p ]
     clib.getNonTerminal.restype = ctypes.c_void_p
 
-    clib.getCardinality.argtypes = [ ctypes.c_void_p, ctypes.c_bool ]
-    clib.getCardinality.restype = ctypes.c_void_p
+    clib.getValue.argtypes = [ ctypes.c_void_p, ctypes.c_bool ]
+    clib.getValue.restype = ctypes.c_void_p
 
     clib.getCardinality.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
     clib.getCardinality.restype = ctypes.c_void_p
@@ -69,13 +69,13 @@ class Grammar:
             self.ntptr = ntptr
         
         def __repr__(self):
-            return "NonTerminal()"
+            return "NonTerminal('" + self.getValue() + "')"
         
-        # def getValue(self, raw = True):
-        #     cstr = Grammar.clib.getValue(Grammar.voidptr(self.ntptr), ctypes.c_bool(raw))
-        #     value = ctypes.c_char_p(cstr).value.decode("utf-8")
-        #     Grammar.clib.freePtr(Grammar.voidptr(cstr))
-        #     return value
+        def getValue(self, raw = False):
+            cstr = Grammar.clib.getValue(Grammar.voidptr(self.ntptr), ctypes.c_bool(raw))
+            value = ctypes.c_char_p(cstr).value.decode("utf-8")
+            Grammar.clib.freePtr(Grammar.voidptr(cstr))
+            return value
         
         def getCardinality(self, n):
             cstr = Grammar.clib.getCardinality(Grammar.voidptr(self.ntptr), Grammar.uint(n))

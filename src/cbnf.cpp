@@ -16,10 +16,10 @@ EXPORT void* getNonTerminal(void* gptr, const char* name) {
     return &((Grammar*)gptr)->getNonTerminal(name);
 }
 
-/*EXPORT void* getValue(void* ntptr, bool raw) {
+EXPORT void* getValue(void* ntptr, bool raw) {
     std::string str = ((NonTerminal*)ntptr)->getValue(raw);
     return strdup(str.c_str());
-}*/
+}
 
 EXPORT void* getCardinality(void* ntptr, unsigned int n) {  
     big_int i = ((NonTerminal*)ntptr)->getCardinality(n);
