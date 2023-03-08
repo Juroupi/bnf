@@ -16,6 +16,11 @@ EXPORT void* getNonTerminal(void* gptr, const char* name) {
     return &((Grammar*)gptr)->getNonTerminal(name);
 }
 
+/*EXPORT void* getValue(void* ntptr, bool raw) {
+    std::string str = ((NonTerminal*)ntptr)->getValue(raw);
+    return strdup(str.c_str());
+}*/
+
 EXPORT void* getCardinality(void* ntptr, unsigned int n) {  
     big_int i = ((NonTerminal*)ntptr)->getCardinality(n);
     return big_int_to_cstr(i);
@@ -24,6 +29,11 @@ EXPORT void* getCardinality(void* ntptr, unsigned int n) {
 EXPORT void* getElement(void* ntptr, unsigned int n, const char* id) { 
     big_int i(id, 10);
     std::string str = ((NonTerminal*)ntptr)->getElement(n, i);
+    return strdup(str.c_str());
+}
+
+EXPORT void* getRandomElement(void* ntptr, unsigned int n) { 
+    std::string str = ((NonTerminal*)ntptr)->getRandomElement(n);
     return strdup(str.c_str());
 }
 

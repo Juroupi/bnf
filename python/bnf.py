@@ -14,11 +14,17 @@ class Grammar:
     clib.getNonTerminal.argtypes = [ ctypes.c_void_p, ctypes.c_char_p ]
     clib.getNonTerminal.restype = ctypes.c_void_p
 
+    clib.getCardinality.argtypes = [ ctypes.c_void_p, ctypes.c_bool ]
+    clib.getCardinality.restype = ctypes.c_void_p
+
     clib.getCardinality.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
     clib.getCardinality.restype = ctypes.c_void_p
 
     clib.getElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint, ctypes.c_char_p ]
     clib.getElement.restype = ctypes.c_void_p
+
+    clib.getRandomElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
+    clib.getRandomElement.restype = ctypes.c_void_p
 
     clib.getElements.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
     clib.getElements.restype = ctypes.c_void_p
@@ -65,6 +71,12 @@ class Grammar:
         def __repr__(self):
             return "NonTerminal()"
         
+        # def getValue(self, raw = True):
+        #     cstr = Grammar.clib.getValue(Grammar.voidptr(self.ntptr), ctypes.c_bool(raw))
+        #     value = ctypes.c_char_p(cstr).value.decode("utf-8")
+        #     Grammar.clib.freePtr(Grammar.voidptr(cstr))
+        #     return value
+        
         def getCardinality(self, n):
             cstr = Grammar.clib.getCardinality(Grammar.voidptr(self.ntptr), Grammar.uint(n))
             card = int(ctypes.c_char_p(cstr).value)
@@ -73,6 +85,12 @@ class Grammar:
         
         def getElement(self, n, id):
             cstr = Grammar.clib.getElement(Grammar.voidptr(self.ntptr), Grammar.uint(n), Grammar.cstr(str(id)))
+            element = ctypes.c_char_p(cstr).value.decode("utf-8")
+            Grammar.clib.freePtr(Grammar.voidptr(cstr))
+            return element
+        
+        def getRandomElement(self, n):
+            cstr = Grammar.clib.getRandomElement(Grammar.voidptr(self.ntptr), Grammar.uint(n))
             element = ctypes.c_char_p(cstr).value.decode("utf-8")
             Grammar.clib.freePtr(Grammar.voidptr(cstr))
             return element

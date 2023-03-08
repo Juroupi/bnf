@@ -19,4 +19,4 @@ bin/%.o: src/%.cpp include/grammar.h
 	$(CXX) $< $(CXXFLAGS) $(OPT) $(DEBUG) -c -o $@
 
 clean:
-	rm -rf bnf cbnf.so bin/*
+	rm -rf bnf cbnf.so bin/* python/__pycache__
