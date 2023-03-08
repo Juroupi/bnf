@@ -1,4 +1,4 @@
-#include "grammar.h"
+#include "bnf/grammar.h"
 
 #define EXPORT __attribute__ ((visibility ("default")))
 

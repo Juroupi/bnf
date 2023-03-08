@@ -1,4 +1,4 @@
-#include "grammar.h"
+#include "bnf/grammar.h"
 
 using namespace std;
 

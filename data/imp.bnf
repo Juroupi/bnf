@@ -1,0 +1,7 @@
+<fun>   ::= "f" | "g"
+<var>   ::= "x" | "y"
+<num>   ::= "0" | "1" | "2" | "3"
+<binop> ::= "+" | "-"
+<expr>  ::= "(" <expr> ")" | <var> | <num> | <fun> "(" <expr> ")" | <expr> <binop> <expr>
+<instr> ::= <expr> | <var> "=" <expr> | "if(" <expr> "){" <block> "}"
+<block>  ::= <instr> ";" <block> | ""

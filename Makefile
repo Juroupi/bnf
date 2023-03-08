@@ -14,7 +14,7 @@ bnf: src/bnf.cpp $(OBJECTS)
 cbnf.so: src/cbnf.cpp $(OBJECTS)
 	$(CXX) -shared -fvisibility=hidden -o $@ $^ $(CXXFLAGS) $(OPT) $(DEBUG)
 
-bin/%.o: src/%.cpp include/grammar.h
+bin/%.o: src/%.cpp include/bnf/grammar.h
 	@mkdir -p bin
 	$(CXX) $< $(CXXFLAGS) $(OPT) $(DEBUG) -c -o $@
 

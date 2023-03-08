@@ -1,9 +1,9 @@
-#include "grammar.h"
+#include "bnf/grammar.h"
 
 #include <iostream>
 #include <fstream>
 
-#include "lexer.h"
+#include "bnf/lexer.h"
 
 using namespace std;
 

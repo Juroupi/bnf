@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "bnf/lexer.h"
 
 #include <iostream>
 #include <cctype>

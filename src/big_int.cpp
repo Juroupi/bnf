@@ -1,4 +1,4 @@
-#include "big_int.h"
+#include "bnf/big_int.h"
 
 char* big_int_to_cstr(const big_int& i) {
     return mpz_get_str(NULL, 10, i.get_mpz_t());
