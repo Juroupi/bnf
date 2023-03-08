@@ -5,7 +5,7 @@ OPT = -O2
 
 all: bnf
 
-bnf: src/main.cpp bin/grammar.o bin/print.o bin/parser.o bin/lexer.o bin/big_int.o \
+bnf: src/bnf.cpp bin/grammar.o bin/print.o bin/parser.o bin/lexer.o bin/big_int.o \
      bin/valuation.o bin/cardinality.o bin/elements.o bin/random.o bin/element.o
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
 
