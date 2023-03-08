@@ -71,6 +71,8 @@ void NonTerminal::clearMemory() const {
 
 const unsigned int Grammar::maxLength = UINT_MAX / 2;
 
+Grammar::Grammar() {}
+
 Grammar::Grammar(const string& fileName) {
     parseFile(fileName);
     updateMinLengths();

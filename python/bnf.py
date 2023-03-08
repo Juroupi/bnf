@@ -71,7 +71,7 @@ class Grammar:
         def __repr__(self):
             return "NonTerminal('" + self.getValue() + "')"
         
-        def getValue(self, raw = False):
+        def getValue(self, raw = True):
             cstr = Grammar.clib.getValue(Grammar.voidptr(self.ntptr), ctypes.c_bool(raw))
             value = ctypes.c_char_p(cstr).value.decode("utf-8")
             Grammar.clib.freePtr(Grammar.voidptr(cstr))

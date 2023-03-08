@@ -1,5 +1,3 @@
-import sys
-sys.path.append("./python")
 from bnf import *
 
 g = Grammar("data/par.bnf")
