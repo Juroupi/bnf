@@ -130,8 +130,6 @@ public:
     NonTerminal& getNonTerminal(const std::string& name);
     NonTerminal& operator[](const std::string& name);
 
-    void getCardinality(big_int& cardinality, const std::string& nonTerminalName, unsigned int n) const;
-    big_int getCardinality(const std::string& nonTerminalName, unsigned int n) const;
     void reserveMemory(unsigned int n) const;
     void clearMemory() const;
 

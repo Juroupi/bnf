@@ -1,4 +1,7 @@
 .vscode/
 vs-project/
-main
+bnf
+cbnf.so
+cbnf.dll
 bin/
+python/__pycache__
