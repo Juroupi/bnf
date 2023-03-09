@@ -25,7 +25,7 @@ test: tests
 	./tests
 
 doc.md: include/bnf/grammar.h
-	touch doc.md
+	mdoc doc.md include/bnf/grammar.h
 
 clean:
 	rm -rf bnf cbnf.so bin/* python/__pycache__
