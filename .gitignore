@@ -1,6 +1,7 @@
 .vscode/
 vs-project/
 bnf
+bnf.o
 cbnf.so
 cbnf.dll
 tests
