@@ -7,3 +7,4 @@ tests
 doc.md
 bin/
 python/__pycache__
+!include

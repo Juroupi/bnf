@@ -28,4 +28,4 @@ doc.md: include/bnf/grammar.h
 	mdoc doc.md include/bnf/grammar.h
 
 clean:
-	rm -rf bnf cbnf.so bin/* python/__pycache__
+	rm -rf bnf cbnf.so bin/* tests doc.md python/__pycache__
