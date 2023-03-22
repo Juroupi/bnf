@@ -18,3 +18,31 @@ string NonTerminal::getRandomElement(unsigned int n) const {
     getRandomElement(res, n);
     return res;
 }
+
+string NonTerminal::getRandomElementOfHeight(unsigned int n) const {
+    string res;
+    getRandomElementOfHeight(res, n);
+    return res;
+}
+
+void Terminal::getRandomElementOfHeight(string& element, unsigned int n) const {
+    
+    if (n > 0) {
+        element += value;
+    }
+}
+
+void NonTerminal::getRandomElementOfHeight(string& element, unsigned int n) const {
+    
+    if (n > 0) {
+        auto i = randState.get(productionRules.size()).get_ui();
+        productionRules[i].getRandomElementOfHeight(element, n);
+    }
+}
+
+void ProductionRule::getRandomElementOfHeight(string& element, unsigned int n) const {
+    
+    for (const Symbol* symbol : symbols) {
+        symbol->getRandomElementOfHeight(element, n - 1);
+    }
+}

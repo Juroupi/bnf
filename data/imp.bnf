@@ -4,4 +4,4 @@
 <binop> ::= "+" | "-"
 <expr>  ::= "(" <expr> ")" | <var> | <num> | <fun> "(" <expr> ")" | <expr> <binop> <expr>
 <instr> ::= <expr> | <var> "=" <expr> | "if(" <expr> "){" <block> "}"
-<block>  ::= <instr> ";" <block> | ""
+<block>  ::= <instr> ";" <block> | <instr>

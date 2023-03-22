@@ -23,6 +23,7 @@ struct Symbol {
     virtual void getCardinality(big_int& res, unsigned int n) const = 0;
     virtual void getElements(std::set<std::string>& elements, unsigned int n) const = 0;
     virtual void getElement(std::string& element, unsigned int n, big_int& id) const = 0;
+    virtual void getRandomElementOfHeight(std::string& element, unsigned int n) const = 0;
     virtual unsigned int getMinLength() const = 0;
 };
 
@@ -67,6 +68,8 @@ public:
 
     void getElement(std::string& element, unsigned int n, big_int& id) const;
 
+    void getRandomElementOfHeight(std::string& element, unsigned int n) const;
+
     unsigned int getMinLength() const;
     bool updateMinLength();
 
@@ -93,6 +96,8 @@ struct Terminal : public Symbol {
     void getElements(std::set<std::string>& elements, unsigned int n) const override;
 
     void getElement(std::string& element, unsigned int n, big_int& id) const override;
+
+    void getRandomElementOfHeight(std::string& element, unsigned int n) const override;
 
     unsigned int getMinLength() const override;
 };
@@ -152,11 +157,18 @@ public:
     bool updateMinLength();
 
     /**
-     * Générer un élément aléatoire à partir de ce non terminal.
+     * Générer un élément aléatoire uniforme à partir de ce non terminal.
      * @param n la longueur de l'élément
      */
     std::string getRandomElement(unsigned int n) const;
     void getRandomElement(std::string& element, unsigned int n) const;
+
+    /**
+     * Générer un élément aléatoire non uniforme à partir de ce non terminal.
+     * @param n la hauteur de l'arbre
+     */
+    std::string getRandomElementOfHeight(unsigned int n) const;
+    void getRandomElementOfHeight(std::string& element, unsigned int n) const;
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };

@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Iinclude -lgmp -lgmpxx -fPIC -Wall
+CXXFLAGS = -Iinclude -lgmp -lgmpxx # -Wall
 # DEBUG = -g
 OPT = -O2
 
@@ -12,7 +12,7 @@ all: $(TARGETS)
 
 bin/%.o: src/%.cpp include/bnf/grammar.h
 	@mkdir -p bin
-	$(CXX) $< $(CXXFLAGS) $(OPT) $(DEBUG) -c -o $@
+	$(CXX) $< $(CXXFLAGS) -fPIC $(OPT) $(DEBUG) -c -o $@
 
 bnf: src/bnf.cpp $(OBJECTS)
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
@@ -21,7 +21,7 @@ bnf.o: $(OBJECTS)
 	ld -r $(OBJECTS) -o $@
 
 cbnf.so: src/cbnf.cpp $(OBJECTS)
-	$(CXX) -shared -fvisibility=hidden -o $@ $^ $(CXXFLAGS) $(OPT) $(DEBUG)
+	$(CXX) -fPIC -shared -fvisibility=hidden -o $@ $^ $(CXXFLAGS) $(OPT) $(DEBUG)
 
 tests: src/tests.cpp $(OBJECTS)
 	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
