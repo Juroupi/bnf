@@ -11,6 +11,8 @@ static const string tokenNames[] = {
     "UNFINISHED_TERMINAL",
     "NON_TERMINAL",
     "UNFINISHED_NON_TERMINAL",
+    "PROBABILITY",
+    "UNFINISHED_PROBABILITY",
     "DEFINE",
     "UNION",
     "END"
@@ -58,6 +60,12 @@ Token _readToken(const string& line, unsigned int& pos, string& value) {
         return readValue(line, ++pos, value, '"')
             ? Token::TERMINAL
             : Token::UNFINISHED_TERMINAL;
+    }
+
+    else if (line[pos] == '%') {
+        return readValue(line, ++pos, value, '%')
+            ? Token::PROBABILITY
+            : Token::UNFINISHED_PROBABILITY;
     }
 
     else if (line[pos] == '\'') {

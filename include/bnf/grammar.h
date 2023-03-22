@@ -48,6 +48,8 @@ class ProductionRule {
 
 public:
 
+    float probability = 1;
+
     ProductionRule();
 
     /**
@@ -110,6 +112,7 @@ class NonTerminal : public Symbol {
     unsigned int minLength;
     std::vector<ProductionRule> productionRules;
     mutable std::vector<std::unique_ptr<big_int>> cardinalities;
+    float probabilitySum;
 
 public:
 
@@ -169,6 +172,7 @@ public:
      */
     std::string getRandomElementOfHeight(unsigned int n) const;
     void getRandomElementOfHeight(std::string& element, unsigned int n) const;
+    void updateProbabilitySum();
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };

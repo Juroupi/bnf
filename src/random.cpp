@@ -1,10 +1,16 @@
 #include "bnf/grammar.h"
 
+#include <cstdlib>
 #include <ctime>
 
 using namespace std;
 
 static rand_state randState;
+
+static float randomFloat(int max) {
+    static auto _s = (srand((unsigned int)std::chrono::system_clock::now().time_since_epoch().count()), 0);
+    return rand() / (float)RAND_MAX * max;
+}
 
 void NonTerminal::getRandomElement(string& element, unsigned int n) const {
     big_int card, id;
@@ -35,8 +41,17 @@ void Terminal::getRandomElementOfHeight(string& element, unsigned int n) const {
 void NonTerminal::getRandomElementOfHeight(string& element, unsigned int n) const {
     
     if (n > 0) {
-        auto i = randState.get(productionRules.size()).get_ui();
-        productionRules[i].getRandomElementOfHeight(element, n);
+
+        float limit = randomFloat(probabilitySum), sum = 0;
+
+        for (const auto& productionRule : productionRules) {
+
+            sum += productionRule.probability;
+
+            if (sum >= limit) {
+                return productionRule.getRandomElementOfHeight(element, n);
+            }
+        }
     }
 }
 

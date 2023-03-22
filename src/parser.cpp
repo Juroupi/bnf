@@ -27,6 +27,10 @@ static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRul
         productionRule.addSymbol(grammar.getNonTerminal(value));
     }
 
+    else if (token == Token::PROBABILITY) {
+        productionRule.probability = std::stof(value);
+    }
+
     else {
         return token;
     }
@@ -65,7 +69,11 @@ void Grammar::parseLine(const string& line, unsigned int pos) {
         syntaxError("rule definition token expected");
     }
 
-    token = parseProductionRules(*this, getNonTerminal(nonTerminalName), line, pos);
+    auto& nonTerminal = getNonTerminal(nonTerminalName);
+
+    token = parseProductionRules(*this, nonTerminal, line, pos);
+
+    nonTerminal.updateProbabilitySum();
 
     if (token != Token::END) {
         syntaxError("unexpected token " + tokenName(token));
