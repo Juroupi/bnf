@@ -27,37 +27,39 @@ string NonTerminal::getRandomElement(unsigned int n) const {
 
 string NonTerminal::getRandomElementOfHeight(unsigned int n) const {
     string res;
-    getRandomElementOfHeight(res, n);
+    getRandomElementOfHeight(res, n, n);
     return res;
 }
 
-void Terminal::getRandomElementOfHeight(string& element, unsigned int n) const {
+void Terminal::getRandomElementOfHeight(string& element, unsigned int totaln, unsigned int n) const {
     
     if (n > 0) {
         element += value;
     }
 }
 
-void NonTerminal::getRandomElementOfHeight(string& element, unsigned int n) const {
+void NonTerminal::getRandomElementOfHeight(string& element, unsigned int totaln, unsigned int n) const {
     
     if (n > 0) {
 
-        float limit = randomFloat(probabilitySum), sum = 0;
+        float x = (totaln - n) / (float)totaln;
+
+        float limit = randomFloat(getProbabilitySum(x)), sum = 0;
 
         for (const auto& productionRule : productionRules) {
 
-            sum += productionRule.probability;
+            sum += productionRule.getProbability(x);
 
-            if (sum >= limit) {
-                return productionRule.getRandomElementOfHeight(element, n);
+            if (sum > limit) {
+                return productionRule.getRandomElementOfHeight(element, totaln, n);
             }
         }
     }
 }
 
-void ProductionRule::getRandomElementOfHeight(string& element, unsigned int n) const {
+void ProductionRule::getRandomElementOfHeight(string& element, unsigned int totaln, unsigned int n) const {
     
     for (const Symbol* symbol : symbols) {
-        symbol->getRandomElementOfHeight(element, n - 1);
+        symbol->getRandomElementOfHeight(element, totaln, n - 1);
     }
 }

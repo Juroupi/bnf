@@ -5,7 +5,8 @@
 using namespace std;
 
 ProductionRule::ProductionRule() :
-    terminalsLength(0), minLength(), nonTerminals(), symbols(), probability(1) {}
+    terminalsLength(0), minLength(), nonTerminals(), symbols(),
+    startProbability(1), endProbability(1) {}
 
 void ProductionRule::addSymbol(Terminal& terminal) {
     terminalsLength += terminal.value.length();
@@ -30,6 +31,10 @@ unsigned int ProductionRule::getSymbolMaxLength(unsigned int n, unsigned int tot
     }
 
     return min(n, totaln - othersMinLength);
+}
+
+float ProductionRule::getProbability(float x) const {
+    return x * (endProbability - startProbability) + startProbability;
 }
 
 Terminal::Terminal(const std::string& value) :
@@ -68,14 +73,17 @@ void NonTerminal::reserveMemory(unsigned int n) const {
 void NonTerminal::clearMemory() const {
     cardinalities.clear();
 }
-    
-void NonTerminal::updateProbabilitySum() {
 
-    probabilitySum = 0;
 
-    for (const auto& productionRule : productionRules) {
-        probabilitySum += productionRule.probability;
+float NonTerminal::getProbabilitySum(float x) const {
+
+    float sum = 0;
+
+    for (auto& rule : productionRules) {
+        sum += rule.getProbability(x);
+
     }
+    return sum;
 }
 
 const unsigned int Grammar::maxLength = UINT_MAX / 2;

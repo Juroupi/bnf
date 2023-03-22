@@ -23,7 +23,7 @@ struct Symbol {
     virtual void getCardinality(big_int& res, unsigned int n) const = 0;
     virtual void getElements(std::set<std::string>& elements, unsigned int n) const = 0;
     virtual void getElement(std::string& element, unsigned int n, big_int& id) const = 0;
-    virtual void getRandomElementOfHeight(std::string& element, unsigned int n) const = 0;
+    virtual void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const = 0;
     virtual unsigned int getMinLength() const = 0;
 };
 
@@ -48,7 +48,7 @@ class ProductionRule {
 
 public:
 
-    float probability = 1;
+    float startProbability, endProbability;
 
     ProductionRule();
 
@@ -70,10 +70,12 @@ public:
 
     void getElement(std::string& element, unsigned int n, big_int& id) const;
 
-    void getRandomElementOfHeight(std::string& element, unsigned int n) const;
+    void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const;
 
     unsigned int getMinLength() const;
     bool updateMinLength();
+
+    float getProbability(float x) const;
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };
@@ -99,7 +101,7 @@ struct Terminal : public Symbol {
 
     void getElement(std::string& element, unsigned int n, big_int& id) const override;
 
-    void getRandomElementOfHeight(std::string& element, unsigned int n) const override;
+    void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const override;
 
     unsigned int getMinLength() const override;
 };
@@ -112,7 +114,6 @@ class NonTerminal : public Symbol {
     unsigned int minLength;
     std::vector<ProductionRule> productionRules;
     mutable std::vector<std::unique_ptr<big_int>> cardinalities;
-    float probabilitySum;
 
 public:
 
@@ -171,8 +172,8 @@ public:
      * @param n la hauteur de l'arbre
      */
     std::string getRandomElementOfHeight(unsigned int n) const;
-    void getRandomElementOfHeight(std::string& element, unsigned int n) const;
-    void updateProbabilitySum();
+    void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const override;
+    float getProbabilitySum(float x) const;
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };

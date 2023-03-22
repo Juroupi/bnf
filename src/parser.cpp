@@ -12,6 +12,21 @@ static void syntaxError(const string& message) {
     exit(1);
 }
 
+static void parseProbability(Grammar& grammar, ProductionRule& productionRule, const string& value) {
+
+    unsigned int dashPos = value.find('-');
+
+    if (dashPos == string::npos) {
+        productionRule.startProbability = std::stof(value);
+        productionRule.endProbability = productionRule.startProbability;
+    }
+
+    else {
+        productionRule.startProbability = std::stof(value.substr(0, dashPos));
+        productionRule.endProbability = std::stof(value.substr(dashPos + 1));
+    }
+}
+
 static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRule, const string& line, unsigned int& pos) {
 
     Token token;
@@ -28,7 +43,7 @@ static Token parseProductionRule(Grammar& grammar, ProductionRule& productionRul
     }
 
     else if (token == Token::PROBABILITY) {
-        productionRule.probability = std::stof(value);
+        parseProbability(grammar, productionRule, value);
     }
 
     else {
@@ -72,8 +87,6 @@ void Grammar::parseLine(const string& line, unsigned int pos) {
     auto& nonTerminal = getNonTerminal(nonTerminalName);
 
     token = parseProductionRules(*this, nonTerminal, line, pos);
-
-    nonTerminal.updateProbabilitySum();
 
     if (token != Token::END) {
         syntaxError("unexpected token " + tokenName(token));
