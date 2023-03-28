@@ -70,11 +70,29 @@ void testElements(const std::string& file, const std::string& nonTerminal, unsig
     }
 }
 
+void testExists(const std::string& file, const std::string& nonTerminal, unsigned int nmax) {
+
+    Grammar g(file);
+
+    for (unsigned int n = 0; n <= nmax; n++) {
+
+        auto cardinality = g[nonTerminal].getCardinality(n);
+
+        if (cardinality == 0) {
+            assert(!g[nonTerminal].getExists(n));
+        } else {
+            assert(g[nonTerminal].getExists(n));
+        }
+    }
+}
+
 int main() {
 
     testCardinality();
     testElements("data/fibo.bnf", "F", 14);
     testElements("data/par.bnf", "W", 16);
+    testExists("data/fibo.bnf", "F", 100);
+    testExists("data/par.bnf", "W", 100);
 
     std::cout << "tests passed" << std::endl;
 

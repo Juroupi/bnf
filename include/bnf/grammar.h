@@ -15,12 +15,14 @@
 #include <set>
 #include <utility>
 #include <memory>
+#include <optional>
 
 #include "big_int.h"
 
 struct Symbol {
     virtual std::string getValue(bool raw = false) const = 0;
     virtual void getCardinality(big_int& res, unsigned int n) const = 0;
+    virtual bool getExists(unsigned int n) const = 0;
     virtual void getElements(std::set<std::string>& elements, unsigned int n) const = 0;
     virtual void getElement(std::string& element, unsigned int n, big_int& id) const = 0;
     virtual void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const = 0;
@@ -42,6 +44,8 @@ class ProductionRule {
 
     void getCardinality(big_int& res, unsigned int totaln, unsigned int n, unsigned int ntpos) const;
     
+    bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
+
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
     unsigned int getSymbolMaxLength(unsigned int n, unsigned int totaln, unsigned int minLength) const;
@@ -65,6 +69,8 @@ public:
     void addSymbol(NonTerminal& nonTerminal);
 
     void getCardinality(big_int& res, unsigned int n) const;
+
+    bool getExists(unsigned int n) const;
 
     void getElements(std::set<std::string>& elements, unsigned int n) const;
 
@@ -97,6 +103,8 @@ struct Terminal : public Symbol {
 
     void getCardinality(big_int& res, unsigned int n) const override;
 
+    bool getExists(unsigned int n) const override;
+
     void getElements(std::set<std::string>& elements, unsigned int n) const override;
 
     void getElement(std::string& element, unsigned int n, big_int& id) const override;
@@ -114,6 +122,7 @@ class NonTerminal : public Symbol {
     unsigned int minLength;
     std::vector<ProductionRule> productionRules;
     mutable std::vector<std::unique_ptr<big_int>> cardinalities;
+    mutable std::vector<std::optional<bool>> existences;
 
 public:
 
@@ -139,6 +148,7 @@ public:
      */
     big_int getCardinality(unsigned int n) const;
     void getCardinality(big_int& res, unsigned int n) const override;
+    bool getExists(unsigned int n) const;
     void reserveMemory(unsigned int n) const;
     void clearMemory() const;
 

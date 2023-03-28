@@ -50,7 +50,7 @@ string Terminal::getValue(bool raw) const {
 }
 
 NonTerminal::NonTerminal(const string& name) :
-    minLength(Grammar::maxLength), productionRules(), cardinalities(), name(name) {}
+    minLength(Grammar::maxLength), name(name) {}
 
 ProductionRule& NonTerminal::addProductionRule() {
     productionRules.emplace_back();
@@ -68,10 +68,12 @@ string NonTerminal::getValue(bool raw) const {
 
 void NonTerminal::reserveMemory(unsigned int n) const {
     cardinalities.reserve(n);
+    existences.reserve(n);
 }
 
 void NonTerminal::clearMemory() const {
     cardinalities.clear();
+    existences.clear();
 }
 
 
