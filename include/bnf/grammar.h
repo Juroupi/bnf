@@ -47,6 +47,8 @@ class ProductionRule {
     
     bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
 
+    std::vector<unsigned int> getNURandomNonTerminalLengths(unsigned int n) const;
+
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
     unsigned int getSymbolMaxLength(unsigned int n, unsigned int totaln, unsigned int minLength) const;

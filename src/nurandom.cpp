@@ -2,10 +2,9 @@
 
 using namespace std;
 
-static big_int id;
+static auto _s = (srand((unsigned int)chrono::system_clock::now().time_since_epoch().count()), 0);
 
 static float randomFloat(int max) {
-    static auto _s = (srand((unsigned int)chrono::system_clock::now().time_since_epoch().count()), 0);
     return rand() / (float)RAND_MAX * max;
 }
 
@@ -14,47 +13,59 @@ static T& randomElement(vector<T> elements) {
     return elements[rand() % elements.size()];
 }
 
-void ProductionRule::getNURandomElement(string& element, unsigned int n) const {
+vector<unsigned int> ProductionRule::getNURandomNonTerminalLengths(unsigned int n) const {
 
     const unsigned int totaln = n;
 
-    unsigned int ntpos = 0;
+    vector<unsigned int> nonTerminalLengths(nonTerminals.size());
 
     vector<unsigned int> possibleLengths;
 
     n -= terminalsLength;
 
-    for (const Symbol* symbol : symbols) {
+    for (size_t ntpos = 0; ntpos < nonTerminals.size(); ntpos++) {
 
-        if (ntpos < nonTerminals.size() && symbol == nonTerminals[ntpos]) {
+        const NonTerminal& nonTerminal = *nonTerminals[ntpos];
 
-            const NonTerminal& nonTerminal = *nonTerminals[ntpos];
+        unsigned int minLength = nonTerminal.getMinLength();
+        unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
 
-            unsigned int minLength = nonTerminal.getMinLength();
-            unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
+        possibleLengths.clear();
 
-            possibleLengths.clear();
+        for (unsigned int i = minLength; i <= maxLength; i++) {
 
-            for (unsigned int i = minLength; i <= maxLength; i++) {
-
-                if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1)) {
-                    possibleLengths.push_back(i);
-                }
-            }
-
-            if (!possibleLengths.empty()) {
-
-                unsigned int length = randomElement(possibleLengths);
-
-                nonTerminal.getNURandomElement(element, length);
-
-                n -= length;
-                ntpos++;
+            if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1)) {
+                possibleLengths.push_back(i);
             }
         }
 
+        if (!possibleLengths.empty()) {
+
+            unsigned int length = randomElement(possibleLengths);
+
+            nonTerminalLengths[ntpos] = length;
+
+            n -= length;
+        }
+    }
+
+    return nonTerminalLengths;
+}
+
+void ProductionRule::getNURandomElement(string& element, unsigned int n) const {
+
+    vector<unsigned int> nonTerminalLengths = getNURandomNonTerminalLengths(n);
+
+    unsigned int ntpos = 0;
+
+    for (size_t spos = 0; spos < symbols.size(); spos++) {
+
+        if (ntpos < nonTerminals.size() && symbols[spos] == nonTerminals[ntpos]) {
+            symbols[spos]->getNURandomElement(element, nonTerminalLengths[ntpos++]);
+        }
+
         else {
-            element += static_cast<const Terminal*>(symbol)->value;
+            symbols[spos]->getNURandomElement(element, symbols[spos]->getMinLength());
         }
     }
 }
