@@ -14,15 +14,15 @@ static T& randomElement(vector<T> elements) {
     return elements[rand() % elements.size()];
 }
 
-void ProductionRule::getNURandomElement(string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos, vector<unsigned int> ntposes) const {
+void ProductionRule::getNURandomElement(string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos) const {
     
     if (spos >= symbols.size()) {
         return;
     }
 
-    if (ntpos < nonTerminals.size() && symbols[spos] == nonTerminals[ntposes[ntpos]]) {
+    if (ntpos < nonTerminals.size() && symbols[spos] == nonTerminals[ntpos]) {
 
-        const NonTerminal& nonTerminal = *nonTerminals[ntposes[ntpos]];
+        const NonTerminal& nonTerminal = *nonTerminals[ntpos];
 
         unsigned int minLength = nonTerminal.getMinLength();
         unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
@@ -31,7 +31,7 @@ void ProductionRule::getNURandomElement(string& element, unsigned int totaln, un
 
         for (unsigned int i = minLength; i <= maxLength; i++) {
 
-            if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1, ntposes)) {
+            if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1)) {
                 possibleLengths.push_back(i);
             }
         }
@@ -42,7 +42,7 @@ void ProductionRule::getNURandomElement(string& element, unsigned int totaln, un
 
             nonTerminal.getNURandomElement(element, length);
 
-            getNURandomElement(element, totaln, n - length, spos + 1, ntpos + 1, ntposes);
+            getNURandomElement(element, totaln, n - length, spos + 1, ntpos + 1);
         }
     }
 
@@ -52,23 +52,13 @@ void ProductionRule::getNURandomElement(string& element, unsigned int totaln, un
 
         element += terminal.value;
 
-        getNURandomElement(element, totaln, n, spos + 1, ntpos, ntposes);
+        getNURandomElement(element, totaln, n, spos + 1, ntpos);
     }
 }
 
 void ProductionRule::getNURandomElement(string& element, unsigned int n) const {
 
-    vector<unsigned int> ntposes(nonTerminals.size());
-
-    for (unsigned int i = 0; i < ntposes.size(); i++) {
-        ntposes[i] = i;
-    }
-
-    for (unsigned int i = 0; i < ntposes.size(); i++) {
-        swap(ntposes[i], ntposes[rand() % ntposes.size()]);
-    }    
-
-    getNURandomElement(element, n, n - terminalsLength, 0, 0, ntposes);
+    getNURandomElement(element, n, n - terminalsLength, 0, 0);
 }
 
 void Terminal::getNURandomElement(string& elements, unsigned int n) const {

@@ -47,9 +47,7 @@ class ProductionRule {
     
     bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
 
-    bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos, std::vector<unsigned int> ntposes) const;
-
-    void getNURandomElement(std::string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos, std::vector<unsigned int> ntposes) const;
+    void getNURandomElement(std::string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos) const;
 
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
