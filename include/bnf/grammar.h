@@ -47,8 +47,6 @@ class ProductionRule {
     
     bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
 
-    void getNURandomElement(std::string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos) const;
-
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
     unsigned int getSymbolMaxLength(unsigned int n, unsigned int totaln, unsigned int minLength) const;
