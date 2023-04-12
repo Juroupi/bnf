@@ -25,6 +25,7 @@ struct Symbol {
     virtual bool getExists(unsigned int n) const = 0;
     virtual void getElements(std::set<std::string>& elements, unsigned int n) const = 0;
     virtual void getElement(std::string& element, unsigned int n, big_int& id) const = 0;
+    virtual void getNURandomElement(std::string& element, unsigned int n) const = 0;
     virtual void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const = 0;
     virtual unsigned int getMinLength() const = 0;
 };
@@ -45,6 +46,10 @@ class ProductionRule {
     void getCardinality(big_int& res, unsigned int totaln, unsigned int n, unsigned int ntpos) const;
     
     bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
+
+    bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos, std::vector<unsigned int> ntposes) const;
+
+    void getNURandomElement(std::string& element, unsigned int totaln, unsigned int n, unsigned int spos, unsigned int ntpos, std::vector<unsigned int> ntposes) const;
 
     void getElements(std::set<std::string>& elements, unsigned int totaln, unsigned int n, unsigned int spos, std::string cur) const;
     
@@ -76,12 +81,14 @@ public:
 
     void getElement(std::string& element, unsigned int n, big_int& id) const;
 
+    void getNURandomElement(std::string& element, unsigned int n) const;
+
     void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const;
 
     unsigned int getMinLength() const;
     bool updateMinLength();
 
-    float getProbability(float x) const;
+    float getProbability(float x = 0) const;
 
     void print(bool detailed = false, std::ostream& stream = std::cout) const;
 };
@@ -108,6 +115,8 @@ struct Terminal : public Symbol {
     void getElements(std::set<std::string>& elements, unsigned int n) const override;
 
     void getElement(std::string& element, unsigned int n, big_int& id) const override;
+
+    void getNURandomElement(std::string& element, unsigned int n) const override;
 
     void getRandomElementOfHeight(std::string& element, unsigned int totaln, unsigned int n = 0) const override;
 
@@ -176,6 +185,14 @@ public:
      */
     std::string getRandomElement(unsigned int n) const;
     void getRandomElement(std::string& element, unsigned int n) const;
+
+    /**
+     * Générer un élément aléatoire non uniforme à partir de ce non terminal.
+     * @param n la longueur de l'élément
+     */
+    std::string getNURandomElement(unsigned int n) const;
+    void getNURandomElement(std::string& element, unsigned int n) const override;
+    float getProbabilitySum(unsigned int n) const;
 
     /**
      * Générer un élément aléatoire non uniforme à partir de ce non terminal.

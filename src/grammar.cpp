@@ -76,15 +76,28 @@ void NonTerminal::clearMemory() const {
     existences.clear();
 }
 
+float NonTerminal::getProbabilitySum(unsigned int n) const {
+
+    float sum = 0;
+
+    for (auto& productionRule : productionRules) {
+        
+        if (productionRule.getExists(n)) {
+            sum += productionRule.getProbability();
+        }
+    }
+
+    return sum;
+}
 
 float NonTerminal::getProbabilitySum(float x) const {
 
     float sum = 0;
 
-    for (auto& rule : productionRules) {
-        sum += rule.getProbability(x);
-
+    for (auto& productionRule : productionRules) {
+        sum += productionRule.getProbability(x);
     }
+    
     return sum;
 }
 
