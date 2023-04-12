@@ -65,7 +65,7 @@ void ProductionRule::getNURandomElement(string& element, unsigned int n) const {
         }
 
         else {
-            symbols[spos]->getNURandomElement(element, symbols[spos]->getMinLength());
+            element += static_cast<const Terminal*>(symbols[spos])->value;
         }
     }
 }
