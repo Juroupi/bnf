@@ -5,7 +5,7 @@ OPT = -O2
 
 OBJECTS = bin/grammar.o bin/print.o bin/parser.o bin/lexer.o bin/big_int.o \
           bin/valuation.o bin/cardinality.o bin/exists.o bin/elements.o \
-		  bin/random.o bin/nurandom.o bin/element.o
+		  bin/urandom.o bin/nurandom.o bin/element.o
 
 TARGETS = bnf bnf.o cbnf.so tests doc.md
 
@@ -32,6 +32,9 @@ test: tests
 
 doc.md: include/bnf/grammar.h
 	mdoc doc.md include/bnf/grammar.h
+
+test_python:
+	python3 python/test.py
 
 clean:
 	rm -rf $(TARGETS) bin/* python/__pycache__

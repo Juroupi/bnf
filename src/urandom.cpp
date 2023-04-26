@@ -12,16 +12,16 @@ static float randomFloat(int max) {
     return rand() / (float)RAND_MAX * max;
 }
 
-void NonTerminal::getRandomElement(string& element, unsigned int n) const {
+void NonTerminal::getURandomElement(string& element, unsigned int n) const {
     big_int card, id;
     getCardinality(card, n);
     id = randState.get(card);
     getElement(element, n, id);
 }
 
-string NonTerminal::getRandomElement(unsigned int n) const {
+string NonTerminal::getURandomElement(unsigned int n) const {
     string res;
-    getRandomElement(res, n);
+    getURandomElement(res, n);
     return res;
 }
 

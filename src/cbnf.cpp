@@ -32,8 +32,13 @@ EXPORT void* getElement(void* ntptr, unsigned int n, const char* id) {
     return strdup(str.c_str());
 }
 
-EXPORT void* getRandomElement(void* ntptr, unsigned int n) { 
-    std::string str = ((NonTerminal*)ntptr)->getRandomElement(n);
+EXPORT void* getURandomElement(void* ntptr, unsigned int n) { 
+    std::string str = ((NonTerminal*)ntptr)->getURandomElement(n);
+    return strdup(str.c_str());
+}
+
+EXPORT void* getNURandomElement(void* ntptr, unsigned int n) { 
+    std::string str = ((NonTerminal*)ntptr)->getNURandomElement(n);
     return strdup(str.c_str());
 }
 

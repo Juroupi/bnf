@@ -181,8 +181,8 @@ public:
      * Générer un élément aléatoire uniforme à partir de ce non terminal.
      * @param n la longueur de l'élément
      */
-    std::string getRandomElement(unsigned int n) const;
-    void getRandomElement(std::string& element, unsigned int n) const;
+    std::string getURandomElement(unsigned int n) const;
+    void getURandomElement(std::string& element, unsigned int n) const;
 
     /**
      * Générer un élément aléatoire non uniforme à partir de ce non terminal.

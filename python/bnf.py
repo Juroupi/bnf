@@ -23,8 +23,11 @@ class Grammar:
     clib.getElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint, ctypes.c_char_p ]
     clib.getElement.restype = ctypes.c_void_p
 
-    clib.getRandomElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
-    clib.getRandomElement.restype = ctypes.c_void_p
+    clib.getURandomElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
+    clib.getURandomElement.restype = ctypes.c_void_p
+
+    clib.getNURandomElement.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
+    clib.getNURandomElement.restype = ctypes.c_void_p
 
     clib.getElements.argtypes = [ ctypes.c_void_p, ctypes.c_uint ]
     clib.getElements.restype = ctypes.c_void_p
@@ -89,8 +92,14 @@ class Grammar:
             Grammar.clib.freePtr(Grammar.voidptr(cstr))
             return element
         
-        def getRandomElement(self, n):
-            cstr = Grammar.clib.getRandomElement(Grammar.voidptr(self.ntptr), Grammar.uint(n))
+        def getURandomElement(self, n):
+            cstr = Grammar.clib.getURandomElement(Grammar.voidptr(self.ntptr), Grammar.uint(n))
+            element = ctypes.c_char_p(cstr).value.decode("utf-8")
+            Grammar.clib.freePtr(Grammar.voidptr(cstr))
+            return element
+        
+        def getNURandomElement(self, n):
+            cstr = Grammar.clib.getNURandomElement(Grammar.voidptr(self.ntptr), Grammar.uint(n))
             element = ctypes.c_char_p(cstr).value.decode("utf-8")
             Grammar.clib.freePtr(Grammar.voidptr(cstr))
             return element
