@@ -10,7 +10,7 @@ make
 
 Dépendances :
 
-- La bibliothèque [GMP](https://gmplib.org/) pour gérer les grands nombres.
+- La bibliothèque [GMP](https://gmplib.org/) (la version C++) pour gérer les grands nombres.
 
 ## Fichiers générés
 
