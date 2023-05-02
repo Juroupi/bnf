@@ -16,7 +16,7 @@ bin/%.o: src/%.cpp include/bnf/grammar.h
 	$(CXX) $< $(CXXFLAGS) -fPIC $(OPT) $(DEBUG) -c -o $@
 
 bnf: src/bnf.cpp $(OBJECTS)
-	$(CXX) $^ $(CXXFLAGS) $(OPT) $(DEBUG) -o $@
+	$(CXX) $(OPT) $^ $(CXXFLAGS) $(DEBUG) -o $@
 
 bnf.o: $(OBJECTS)
 	ld -r $(OBJECTS) -o $@
