@@ -46,6 +46,7 @@ class ProductionRule {
     void getCardinality(big_int& res, unsigned int totaln, unsigned int n, unsigned int ntpos) const;
     
     bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos) const;
+    bool getExists(unsigned int totaln, unsigned int n, unsigned int ntpos, const std::vector<unsigned int>& ntmap) const;
 
     std::vector<unsigned int> getNURandomNonTerminalLengths(unsigned int n) const;
 

@@ -13,11 +13,28 @@ static T& randomElement(vector<T> elements) {
     return elements[rand() % elements.size()];
 }
 
+static vector<unsigned int> shuffledIndices(unsigned int n) {
+
+    vector<unsigned int> indices(n);
+
+    for (unsigned int i = 0; i < n; i++) {
+        indices[i] = i;
+    }
+
+    for (unsigned int i = 0; i < n; i++) {
+        std::swap(indices[i], indices[rand() % n]);
+    }
+
+    return indices;
+}
+
 vector<unsigned int> ProductionRule::getNURandomNonTerminalLengths(unsigned int n) const {
 
     const unsigned int totaln = n;
 
     vector<unsigned int> nonTerminalLengths(nonTerminals.size());
+
+    vector<unsigned int> ntmap = shuffledIndices(nonTerminals.size());
 
     vector<unsigned int> possibleLengths;
 
@@ -25,7 +42,7 @@ vector<unsigned int> ProductionRule::getNURandomNonTerminalLengths(unsigned int 
 
     for (size_t ntpos = 0; ntpos < nonTerminals.size(); ntpos++) {
 
-        const NonTerminal& nonTerminal = *nonTerminals[ntpos];
+        const NonTerminal& nonTerminal = *nonTerminals[ntmap[ntpos]];
 
         unsigned int minLength = nonTerminal.getMinLength();
         unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
@@ -34,7 +51,7 @@ vector<unsigned int> ProductionRule::getNURandomNonTerminalLengths(unsigned int 
 
         for (unsigned int i = minLength; i <= maxLength; i++) {
 
-            if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1)) {
+            if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1, ntmap)) {
                 possibleLengths.push_back(i);
             }
         }
@@ -43,7 +60,7 @@ vector<unsigned int> ProductionRule::getNURandomNonTerminalLengths(unsigned int 
 
             unsigned int length = randomElement(possibleLengths);
 
-            nonTerminalLengths[ntpos] = length;
+            nonTerminalLengths[ntmap[ntpos]] = length;
 
             n -= length;
         }

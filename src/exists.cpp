@@ -23,6 +23,27 @@ bool ProductionRule::getExists(unsigned int totaln, unsigned int n, unsigned int
     return false;
 }
 
+bool ProductionRule::getExists(unsigned int totaln, unsigned int n, unsigned int ntpos, const std::vector<unsigned int>& ntmap) const {
+
+    if (ntpos >= nonTerminals.size()) {
+        return n == 0;
+    }
+
+    const NonTerminal& nonTerminal = *nonTerminals[ntmap[ntpos]];
+
+    unsigned int minLength = nonTerminal.getMinLength();
+    unsigned int maxLength = getSymbolMaxLength(n, totaln, minLength);
+
+    for (unsigned int i = minLength; i <= maxLength; i++) {
+
+        if (nonTerminal.getExists(i) && getExists(totaln, n - i, ntpos + 1, ntmap)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 bool ProductionRule::getExists(unsigned int n) const {
     return getExists(n, n - terminalsLength, 0);
 }
