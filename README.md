@@ -20,3 +20,6 @@ Dépendances :
 - `tests` : un exécutable qui contient les tests unitaires et qui peut être exécuté avec `make test`.
 - `doc.md` : la documentation du projet (a besoin de `mdoc`).
 
+## Binding Python
+
+Un petit binding Python se trouve dans `python/` et est accompagné d'un test qui peut être exécuté avec `make test_python`.
