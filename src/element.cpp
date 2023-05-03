@@ -25,8 +25,7 @@ void ProductionRule::getElement(string& element, unsigned int n, big_int& id) co
 
             for (unsigned int i = minLength; i <= maxLength; i++) {
 
-                big_int symbolCard;
-                symbol->getCardinality(symbolCard, i);
+                const big_int& symbolCard = symbol->getCardinality(i);
 
                 if (symbolCard > 0) {
 

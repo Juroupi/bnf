@@ -21,7 +21,7 @@
 
 struct Symbol {
     virtual std::string getValue(bool raw = false) const = 0;
-    virtual void getCardinality(big_int& res, unsigned int n) const = 0;
+    virtual const big_int& getCardinality(unsigned int n) const = 0;
     virtual bool getExists(unsigned int n) const = 0;
     virtual void getElements(std::set<std::string>& elements, unsigned int n) const = 0;
     virtual void getElement(std::string& element, unsigned int n, big_int& id) const = 0;
@@ -107,7 +107,7 @@ struct Terminal : public Symbol {
      */
     std::string getValue(bool raw = false) const override;
 
-    void getCardinality(big_int& res, unsigned int n) const override;
+    const big_int& getCardinality(unsigned int n) const override;
 
     bool getExists(unsigned int n) const override;
 
@@ -154,8 +154,7 @@ public:
      * Récupérer le nombre d'éléments qui peuvent être générés par ce non terminal pour une longueur donnée.
      * @param n la longueur des éléments
      */
-    big_int getCardinality(unsigned int n) const;
-    void getCardinality(big_int& res, unsigned int n) const override;
+    const big_int& getCardinality(unsigned int n) const override;
     bool getExists(unsigned int n) const;
     void reserveMemory(unsigned int n) const;
     void clearMemory() const;

@@ -13,9 +13,7 @@ static float randomFloat(int max) {
 }
 
 void NonTerminal::getURandomElement(string& element, unsigned int n) const {
-    big_int card, id;
-    getCardinality(card, n);
-    id = randState.get(card);
+    big_int id = randState.get(getCardinality(n));
     getElement(element, n, id);
 }
 
