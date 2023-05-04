@@ -113,6 +113,7 @@ void NonTerminal::getNURandomElement(string& element, unsigned int n) const {
 
 string NonTerminal::getNURandomElement(unsigned int n) const {
     string res;
+    res.reserve(n);
     getNURandomElement(res, n);
     return res;
 }

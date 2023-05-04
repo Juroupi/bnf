@@ -95,6 +95,7 @@ void NonTerminal::getElement(string& element, unsigned int n, big_int& id) const
 
 string NonTerminal::getElement(unsigned int n, const big_int& id) const {
     string res;
+    res.reserve(n);
     big_int tmp = id;
     getElement(res, n, tmp);
     return res;

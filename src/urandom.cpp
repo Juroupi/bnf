@@ -19,12 +19,14 @@ void NonTerminal::getURandomElement(string& element, unsigned int n) const {
 
 string NonTerminal::getURandomElement(unsigned int n) const {
     string res;
+    res.reserve(n);
     getURandomElement(res, n);
     return res;
 }
 
 string NonTerminal::getRandomElementOfHeight(unsigned int n) const {
     string res;
+    res.reserve(n);
     getRandomElementOfHeight(res, n, n);
     return res;
 }
