@@ -14,7 +14,7 @@ static void syntaxError(const string& message) {
 
 static void parseProbability(Grammar& grammar, ProductionRule& productionRule, const string& value) {
 
-    unsigned int dashPos = value.find('-');
+    auto dashPos = value.find('-');
 
     if (dashPos == string::npos) {
         productionRule.startProbability = std::stof(value);
