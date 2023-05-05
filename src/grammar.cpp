@@ -5,7 +5,7 @@
 using namespace std;
 
 ProductionRule::ProductionRule() :
-    terminalsLength(0), minLength(), nonTerminals(), symbols(),
+    terminalsLength(0), minLength(Grammar::maxLength), nonTerminals(), symbols(),
     startProbability(1), endProbability(1) {}
 
 void ProductionRule::addSymbol(Terminal& terminal) {
